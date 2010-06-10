@@ -30,21 +30,21 @@
 
 
 # required version of various libraries
-%define req_glib_version		2.21.3
+%define req_glib_version		2.25.8
 %define req_pango_version		1.20.0
 %define req_atk_version			1.29.4
 %define req_cairo_version		1.6.0
 
 %define pkgname			gtk+
-%define api_version		2.0
-%define binary_version	2.10
+%define api_version		3.0
+%define binary_version	3.0
 %define lib_major		0
 %define libname			%mklibname %{pkgname} %{api_version} %{lib_major}
 %define libname_x11		%mklibname %{pkgname}-x11- %{api_version} %{lib_major}
 %define libname_linuxfb %mklibname %{pkgname}-linuxfb- %{api_version} %{lib_major}
 %define libname_pixbuf  %mklibname gdk_pixbuf %{api_version} %{lib_major}
 
-%define gail_major 18
+%define gail_major 0
 %define gail_libname %mklibname gail %gail_major
 %define gaildevelname %mklibname -d gail
 
@@ -52,7 +52,7 @@
 
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
-Version:	2.20.1
+Version:	2.90.2
 Release:        %mkrel 1
 License:	LGPLv2+
 Group:		System/Libraries
@@ -63,22 +63,14 @@ Patch4:		gtk+-2.13.1-extra_im.patch
 Patch5:		gtk+-2.6.9-fileselectorfallback.patch
 # (fc) 2.4.0-2mdk use Ia Ora theme by default if available
 Patch12:	gtk+-defaulttheme.patch
-# (gb) 2.4.4-2mdk handle biarch
-Patch13:	gtk+-2.2.4-lib64.patch
 # (fc) 2.18.2-2mdv fix nautilus crash (GNOME bug #596977) (pterjan)
 Patch15:	gtk+-2.18.1-fixnautiluscrash.patch
 # (fc) 2.20.0-2mdv improve tooltip appareance (GNOME bug #599617) (Fedora)
-Patch18:	gtk+-2.20.0-fresh-tooltips.patch
+Patch18:	gtk+-2.90.2-fresh-tooltips.patch
 # (fc) 2.20.0-2mdv improve tooltip positioning (GNOME bug #599618) (Fedora)
 Patch19:	gtk+-2.20.0-tooltip-positioning.patch
 # (fc) 2.20.0-2mdv allow window dragging toolbars / menubar (GNOME bug #611313)
 Patch20:	gtk+-2.20.0-window-dragging.patch
-# (fc) 2.20.0-3mdv allow specifying icon padding for tray icon (GNOME bug #583273) (Fedora)
-Patch21:	gtk+-2.20.0-icon-padding.patch
-# (fc) 2.20.0-3mdv use proper screen for getshape (GNOME bug #615853) (GIT)
-Patch22:	gtk+-2.20.0-proper-screen.patch
-
-Conflicts:	perl-Gtk2 < 1.113
 
 BuildRoot:	%{_tmppath}/%{name}-%{version}-buildroot
 
@@ -92,7 +84,7 @@ BuildRequires:	libpng-devel
 BuildRequires:	libtiff-devel
 BuildRequires:  cairo-devel >= %{req_cairo_version}
 BuildRequires:	pango-devel >= %{req_pango_version}
-BuildRequires:  gobject-introspection-devel
+BuildRequires:  gobject-introspection-devel >= 0.6.14-2mdv
 BuildRequires:  X11-devel
 BuildRequires:  cups-devel
 BuildRequires:  fam-devel
@@ -116,10 +108,7 @@ Suggests: xdg-user-dirs-gtk
 Suggests: ia_ora-gnome
 %endif
 Requires: %{libname} = %{version}
-Provides:	%{pkgname}2 = %{version}-%{release}
-Obsoletes:	%{pkgname}2
-Provides:	gail = %version-%release
-Obsoletes:	gail
+Provides:	%{pkgname}3 = %{version}-%{release}
 
 %description
 The gtk+ package contains the GIMP ToolKit (GTK+), a library for creating
@@ -133,20 +122,16 @@ you'll need to have the gtk+ package installed.
 %package -n %{libname}
 Summary: %{summary}
 Group:	 %{group}
-Obsoletes:	lib%{pkgname}2
-Provides:	lib%{pkgname}2 = %{version}-%{release}
+Provides:	lib%{pkgname}3 = %{version}-%{release}
 Provides:	lib%{name} = %{version}-%{release}
-Provides:   gtk2 = %{version}-%{release}
+Provides:   gtk3 = %{version}-%{release}
 Requires:   libglib2.0 >= %{req_glib_version}
 Requires:   libpango1.0 >= %{req_pango_version}
 Requires:   libatk1.0 >= %{req_atk_version}
-Conflicts:  libgnomeui2_0 <= 2.0.5
-Conflicts:  gtk-engines2 <= 2.2.0-7mdk
-Conflicts:  %{libname_x11} < 2.10.3-2mdv2007.0
 Requires(post): 	%{libname_x11} = %{version}
-%if !%{enable_bootstrap}
-Suggests: %{_lib}ia_ora-gnome
-%endif
+#%if !%{enable_bootstrap}
+#Suggests: %{_lib}ia_ora-gnome
+#%endif
 
 %description -n %{libname}
 This package contains the library needed to run programs dynamically
@@ -155,13 +140,9 @@ linked with gtk+.
 %package -n %{libname}-devel
 Summary:	Development files for GTK+ (GIMP ToolKit) applications
 Group:		Development/GNOME and GTK+
-Obsoletes:  %{libname_x11}-devel
 Provides:   %{libname_x11}-devel = %{version}-%{release}
-Provides:   gtk2-devel = %{version}-%{release}
-Obsoletes:	%{pkgname}2-devel
-Obsoletes:  lib%{pkgname}2-devel
-Provides:	%{pkgname}2-devel = %{version}-%{release}
-Provides:	lib%{pkgname}2-devel = %{version}-%{release}
+Provides:	%{pkgname}3-devel = %{version}-%{release}
+Provides:	lib%{pkgname}3-devel = %{version}-%{release}
 Provides:	lib%{pkgname}%{api_version}-devel = %{version}-%{release}
 Provides:	%{libname}-devel = %{version}-%{release}
 Provides:	lib%{pkgname}-x11-%{api_version}-devel = %{version}-%{release}
@@ -185,7 +166,6 @@ Summary:	Image loading and manipulation library for GTK+
 Group:		System/Libraries
 Provides:	libgdk_pixbuf%{api_version} = %{version}-%{release}
 Requires(post):		libtiff >= 3.6.1
-Conflicts: gir-repository < 0.6.5-4
 
 %description -n %{libname_pixbuf}
 This package contains libraries used by GTK+ to load and handle
@@ -210,8 +190,6 @@ Provides:	%{name}-backend = %{version}-%{release}
 Requires(post):		%{libname_pixbuf} = %{version}
 Requires: 	%{libname} = %{version}
 Requires:	%{name} >= %{version}-%{release}
-Conflicts:  libgtk+2-devel < 2.0.0
-Conflicts: gir-repository < 0.6.5-4
 
 %description -n %{libname_x11}
 This package contains the X11 version of library needed to run
@@ -221,8 +199,6 @@ programs dynamically linked with gtk+.
 %package -n %{libname_linuxfb}
 Summary:	Frame-Buffer backend of The GIMP ToolKit (GTK+)
 Group:		System/Libraries
-Obsoletes:	lib%{pkgname}2-linuxfb
-Provides:	lib%{pkgname}2-linuxfb = %{version}-%{release}
 Provides:	%{libname}-linuxfb-%{api_version} = %{version}-%{release}
 Provides:	%{name}-backend = %{version}-%{release}
 Requires(post):		%{libname_pixbuf} = %{version}
@@ -236,8 +212,6 @@ programs dynamically linked with gtk+.
 %package -n %{libname_linuxfb}-devel
 Summary:	Development files for frame-buffer backend of GTK+
 Group:		Development/GNOME and GTK+
-Obsoletes:	lib%{pkgname}2-linuxfb-devel
-Provides:	lib%{pkgname}2-linuxfb-devel = %{version}-%{release}
 Provides:	lib%{pkgname}-linuxfb-%{api_version}-devel = %{version}-%{release}
 Requires:   %{libname}-devel = %{version}
 Requires:	%{libname_linuxfb} = %{version}
@@ -254,8 +228,6 @@ with gtk+ Frame Buffer.
 Summary:	GNOME Accessibility Implementation Library
 Group:		System/Libraries
 Provides:	libgail = %{version}-%{release}
-Conflicts:	gail < 1.9.4-2mdv
-
 
 %description -n %{gail_libname}
 Gail is the GNOME Accessibility Implementation Library
@@ -266,8 +238,6 @@ Group:		Development/GNOME and GTK+
 Provides:	gail-devel = %{version}-%{release}
 Provides:	libgail-devel = %{version}-%{release}
 Requires:	%{gail_libname} = %{version}
-Conflicts:	%{_lib}gail17-devel
-Obsoletes: %mklibname -d gail 18
 
 %description -n %gaildevelname
 Gail is the GNOME Accessibility Implementation Library
@@ -275,15 +245,12 @@ Gail is the GNOME Accessibility Implementation Library
 %prep
 %setup -n %{pkgname}-%{version} -q
 %patch4 -p1 -b .extra_im
-%patch5 -p1 -b .fileselectorfallback
+#%patch5 -p1 -b .fileselectorfallback
 %patch12 -p1 -b .defaulttheme
-%patch13 -p1 -b .lib64
 #patch15 -p1 -b .fixnautiluscrash
 %patch18 -p1 -b .fresh-tooltips
-%patch19 -p1 -b .tooltip-positioning
+#%patch19 -p1 -b .tooltip-positioning
 %patch20 -p1 -b .window-dragging
-%patch21 -p1 -b .icon-padding
-%patch22 -p1 -b .proper-screen
 
 #needed by patches 4 & 13
 autoreconf -fi
@@ -308,12 +275,6 @@ export CPPFLAGS="-DGTK_COMPILATION"
 %if !%enable_gtkdoc
 	--enable-gtk-doc=no
 %endif
-
-#gw parallel make fails in 2.19.3-3mdv
-make
-cd gdk
-make Gdk-2.0.typelib
-cd ..
 
 #cd ..
 # Then build frame buffer counterpart
@@ -358,17 +319,15 @@ cd ..
 
 #cd X11-build
 %makeinstall_std mandir=%{_mandir} RUN_QUERY_IMMODULES_TEST=false RUN_QUERY_LOADER_TEST=false
-cp gdk/Gdk-2.0.typelib %buildroot%_libdir/girepository-1.0/
 
 #cd ..
 
-mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/gtk-%{api_version}
-touch $RPM_BUILD_ROOT%{_sysconfdir}/gtk-%{api_version}/gtk.immodules.%{_lib}
-touch $RPM_BUILD_ROOT%{_sysconfdir}/gtk-%{api_version}/gdk-pixbuf.loaders.%{_lib}
+touch $RPM_BUILD_ROOT%_libdir/gtk-%{api_version}/3.0.0/immodules.cache
+touch $RPM_BUILD_ROOT%_libdir/gtk-%{api_version}/3.0.0/loaders.cache
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/gtk-%{api_version}/modules
 
 # handle biarch packages
-progs="gtk-query-immodules-%{api_version} gdk-pixbuf-query-loaders"
+progs="gtk-query-immodules-%{api_version} gdk-pixbuf-query-loaders-%{api_version}"
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/gtk-%{api_version}/bin
 for f in $progs; do
   mv -f $RPM_BUILD_ROOT%{_bindir}/$f $RPM_BUILD_ROOT%{_libdir}/gtk-%{api_version}/bin/
@@ -383,16 +342,16 @@ EOF
   chmod +x $RPM_BUILD_ROOT%{_bindir}/$f
 done
 
-%{find_lang} gtk20
-%find_lang gtk20-properties
-cat gtk20-properties.lang >> gtk20.lang
+%{find_lang} gtk30
+%find_lang gtk30-properties
+cat gtk30-properties.lang >> gtk30.lang
 
 #remove not packaged files
 rm -f $RPM_BUILD_ROOT%{_libdir}/gtk-%{api_version}/%{binary_version}.*/immodules/*.la \
   $RPM_BUILD_ROOT%{_libdir}/gtk-%{api_version}/%{binary_version}.*/loaders/*.la \
   $RPM_BUILD_ROOT%{_libdir}/gtk-%{api_version}/%{binary_version}.*/engines/*.la \
   $RPM_BUILD_ROOT%{_libdir}/gtk-%{api_version}/%{binary_version}.*/printbackends/*.la \
-  $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/modules/*.la
+  $RPM_BUILD_ROOT%{_libdir}/gtk-%{api_version}/modules/*.la
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -408,7 +367,7 @@ if [ "$1" = "2" ]; then
   fi
 fi
 
-%{_libdir}/gtk-%{api_version}/bin/gdk-pixbuf-query-loaders >  %{_sysconfdir}/gtk-%{api_version}/gdk-pixbuf.loaders.%{_lib}
+%{_libdir}/gtk-%{api_version}/bin/gdk-pixbuf-query-loaders-%{api_version} >  %_libdir/gtk-%{api_version}/3.0.0/loaders.cache
 
 %if %mdkversion < 200900
 %postun -n %{libname_pixbuf} -p /sbin/ldconfig
@@ -429,7 +388,7 @@ if [ "$1" = "2" ]; then
   fi
 fi
 
-%{_libdir}/gtk-%{api_version}/bin/gtk-query-immodules-%{api_version} > %{_sysconfdir}/gtk-%{api_version}/gtk.immodules.%{_lib}
+%{_libdir}/gtk-%{api_version}/bin/gtk-query-immodules-%{api_version} > %_libdir/gtk-%{api_version}/3.0.0/immodules.cache
 
 %if %{build_fb}
 %if %mdkversion < 200900
@@ -443,17 +402,20 @@ fi
 %post 
 if [ -d %{_datadir}/icons ]; then
  for i in `/bin/ls %{_datadir}/icons` ; do 
-  [ -d "%{_datadir}/icons/$i" -a -e "%{_datadir}/icons/$i/icon-theme.cache" -a -e "%{_datadir}/icons/$i/index.theme" ] && gtk-update-icon-cache --force --quiet %{_datadir}/icons/$i
+  [ -d "%{_datadir}/icons/$i" -a -e "%{_datadir}/icons/$i/icon-theme.cache" -a -e "%{_datadir}/icons/$i/index.theme" ] && gtk-update-icon-cache-%{api_version} --force --quiet %{_datadir}/icons/$i
  done
  exit 0
 fi
 
-%files -f gtk20.lang
+%files -f gtk30.lang
 %defattr(-, root, root)
 %doc README
+%{_bindir}/gdk-pixbuf-query-loaders-%{api_version}
 %{_bindir}/gtk-query-immodules-%{api_version}
-%{_bindir}/gdk-pixbuf-query-loaders
-%{_bindir}/gtk-update-icon-cache
+%{_bindir}/gtk-update-icon-cache-%{api_version}
+%_mandir/man1/gdk-pixbuf-query-loaders-%{api_version}.1*
+%_mandir/man1/gtk-query-immodules-%{api_version}.1*
+%_mandir/man1/gtk-update-icon-cache-%{api_version}.1*
 %{_datadir}/themes
 %dir %{_sysconfdir}/gtk-%{api_version}
 %config(noreplace) %{_sysconfdir}/gtk-%{api_version}/im-multipress.conf
@@ -461,7 +423,7 @@ fi
 %files -n %{libname}
 %defattr(-, root, root)
 %doc README
-%ghost %verify (not md5 mtime size) %config(noreplace) %{_sysconfdir}/gtk-%{api_version}/gtk.immodules.%{_lib}
+%ghost %verify (not md5 mtime size) %_libdir/gtk-%{api_version}/3.0.0/immodules.cache
 %dir %{_libdir}/gtk-%{api_version}
 %dir %{_libdir}/gtk-%{api_version}/bin
 %{_libdir}/gtk-%{api_version}/bin/gtk-query-immodules-%{api_version}
@@ -476,22 +438,24 @@ fi
 %files -n %{libname}-devel
 %defattr(-, root, root)
 %doc docs/*.txt AUTHORS ChangeLog NEWS* README*
-%doc %{_datadir}/gtk-doc/html/gdk
-%doc %{_datadir}/gtk-doc/html/gtk
-%{_bindir}/gtk-demo
-%_bindir/gtk-builder-convert
+%doc %{_datadir}/gtk-doc/html/gdk3
+%doc %{_datadir}/gtk-doc/html/gtk3
+%{_bindir}/gtk3-demo
+%_bindir/gtk-builder-convert-%{api_version}
+%_mandir/man1/gtk-builder-convert-%{api_version}.1*
 %{_datadir}/aclocal/*
 %{_datadir}/gtk-%{api_version}
-%{_includedir}/gtk-unix-print-%{api_version}/
 %{_includedir}/gtk-%{api_version}/gdk
 %{_includedir}/gtk-%{api_version}/gtk
+%{_includedir}/gtk-%{api_version}/unix-print
 %{_libdir}/gtk-%{api_version}/include
 %{_libdir}/pkgconfig/gdk-%{api_version}.pc
 %{_libdir}/pkgconfig/gtk+-%{api_version}.pc
 %{_libdir}/pkgconfig/gtk+-unix-print-%{api_version}.pc
 %{_libdir}/*x11*.so
-%_datadir/gir-1.0/Gdk-2.0.gir
-%_datadir/gir-1.0/Gtk-2.0.gir
+%_datadir/gir-1.0/Gdk-%{api_version}.gir
+%_datadir/gir-1.0/GdkX11-%{api_version}.gir
+%_datadir/gir-1.0/Gtk-%{api_version}.gir
 %attr(644,root,root) %{_libdir}/*x11*.la
 %{_libdir}/pkgconfig/*x11*
 
@@ -499,20 +463,21 @@ fi
 %files -n %{libname_pixbuf}
 %defattr(-, root, root)
 %{_libdir}/libgdk_pixbuf*.so.*
-%_libdir/girepository-1.0/GdkPixbuf-2.0.typelib
+%_libdir/girepository-1.0/GdkPixbuf-%{api_version}.typelib
 %dir %{_libdir}/gtk-%{api_version}/%{binary_version}.*/loaders
 %{_libdir}/gtk-%{api_version}/%{binary_version}.*/loaders/*.so
-%{_libdir}/gtk-%{api_version}/bin/gdk-pixbuf-query-loaders
-%ghost %verify (not md5 mtime size) %config(noreplace) %{_sysconfdir}/gtk-%{api_version}/gdk-pixbuf.loaders.%{_lib}
+%{_libdir}/gtk-%{api_version}/bin/gdk-pixbuf-query-loaders-%api_version
+%ghost %verify (not md5 mtime size) %_libdir/gtk-%{api_version}/3.0.0/loaders.cache
 
 %files -n %{libname_pixbuf}-devel
 %defattr(-, root, root)
 %doc contrib/gdk-pixbuf-xlib/ChangeLog-* gdk-pixbuf/ChangeLog-*
-%doc %{_datadir}/gtk-doc/html/gdk-pixbuf
-%{_bindir}/gdk-pixbuf-csource
+%doc %{_datadir}/gtk-doc/html/gdk-pixbuf3
+%{_bindir}/gdk-pixbuf-csource-%{api_version}
+%_mandir/man1/gdk-pixbuf-csource-%{api_version}.1*
 %dir %{_includedir}/gtk-%{api_version}
 %{_includedir}/gtk-%{api_version}/gdk-pixbuf*
-%_datadir/gir-1.0/GdkPixbuf-2.0.gir
+%_datadir/gir-1.0/GdkPixbuf-%{api_version}.gir
 %{_libdir}/libgdk_pixbuf*.so
 %attr(644,root,root) %{_libdir}/libgdk_pixbuf*.la
 %{_libdir}/pkgconfig/gdk-pixbuf*.pc
@@ -521,8 +486,9 @@ fi
 %files -n %{libname_x11}
 %defattr(-, root, root)
 %{_libdir}/*x11*.so.*
-%_libdir/girepository-1.0/Gdk-2.0.typelib
-%_libdir/girepository-1.0/Gtk-2.0.typelib
+%_libdir/girepository-1.0/Gdk-%{api_version}.typelib
+%_libdir/girepository-1.0/GdkX11-%{api_version}.typelib
+%_libdir/girepository-1.0/Gtk-%{api_version}.typelib
 
 %if %build_fb
 %files -n %{libname_linuxfb}
@@ -538,14 +504,14 @@ fi
 
 %files -n %gail_libname
 %defattr(-,root,root)
-%{_libdir}/libgailutil.so.%{gail_major}*
-%{_libdir}/gtk-2.0/modules/libferret.so
-%{_libdir}/gtk-2.0/modules/libgail.so
+%{_libdir}/libgailutil-%{api_version}.so.%{gail_major}*
+%{_libdir}/gtk-%{api_version}/modules/libferret.so
+%{_libdir}/gtk-%{api_version}/modules/libgail.so
 
 %files -n %gaildevelname
 %defattr(-,root,root)
-%{_datadir}/gtk-doc/html/gail-libgail-util
-%{_libdir}/libgailutil.so
-%attr(644,root,root) %{_libdir}/libgailutil.la
-%{_includedir}/gail-1.0
-%{_libdir}/pkgconfig/gail.pc
+%{_datadir}/gtk-doc/html/gail-libgail-util3
+%{_libdir}/libgailutil-%{api_version}.so
+%attr(644,root,root) %{_libdir}/libgailutil-%{api_version}.la
+%{_includedir}/gail-%{api_version}
+%{_libdir}/pkgconfig/gail-%{api_version}.pc
