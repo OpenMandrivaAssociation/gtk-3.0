@@ -45,8 +45,8 @@
 %define libname_pixbuf  %mklibname gdk_pixbuf %{api_version} %{lib_major}
 
 %define gail_major 0
-%define gail_libname %mklibname gail %gail_major
-%define gaildevelname %mklibname -d gail
+%define gail_libname %mklibname gail %api_version %gail_major
+%define gaildevelname %mklibname -d gail %api_version
 
 %define git_url git://git.gnome.org/gtk+
 
@@ -233,8 +233,7 @@ Gail is the GNOME Accessibility Implementation Library
 %package -n %gaildevelname
 Summary:	Static libraries, include files for GAIL
 Group:		Development/GNOME and GTK+
-Provides:	gail-devel = %{version}-%{release}
-Provides:	libgail-devel = %{version}-%{release}
+Provides:	libgail-%{api_version}-devel = %{version}-%{release}
 Requires:	%{gail_libname} = %{version}
 
 %description -n %gaildevelname
