@@ -67,8 +67,6 @@ Patch12:	gtk+-defaulttheme.patch
 Patch15:	gtk+-2.18.1-fixnautiluscrash.patch
 # (fc) 2.20.0-2mdv improve tooltip appareance (GNOME bug #599617) (Fedora)
 Patch18:	gtk+-2.90.2-fresh-tooltips.patch
-# (fc) 2.20.0-2mdv improve tooltip positioning (GNOME bug #599618) (Fedora)
-Patch19:	gtk+-2.20.0-tooltip-positioning.patch
 # (fc) 2.20.0-2mdv allow window dragging toolbars / menubar (GNOME bug #611313)
 Patch20:	gtk+-2.20.0-window-dragging.patch
 
@@ -245,11 +243,11 @@ Gail is the GNOME Accessibility Implementation Library
 %prep
 %setup -n %{pkgname}-%{version} -q
 %patch4 -p1 -b .extra_im
+#gw obsolete?
 #%patch5 -p1 -b .fileselectorfallback
 %patch12 -p1 -b .defaulttheme
 #patch15 -p1 -b .fixnautiluscrash
 %patch18 -p1 -b .fresh-tooltips
-#%patch19 -p1 -b .tooltip-positioning
 %patch20 -p1 -b .window-dragging
 
 #needed by patches 4 & 13
