@@ -42,7 +42,6 @@
 %define libname			%mklibname %{pkgname} %{api_version} %{lib_major}
 %define libname_x11		%mklibname %{pkgname}-x11- %{api_version} %{lib_major}
 %define libname_linuxfb %mklibname %{pkgname}-linuxfb- %{api_version} %{lib_major}
-%define libname_pixbuf  %mklibname gdk_pixbuf %{api_version} %{lib_major}
 
 %define gail_major 0
 %define gail_libname %mklibname gail %api_version %gail_major
@@ -52,7 +51,7 @@
 
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
-Version:	2.90.3
+Version:	2.90.4
 Release:        %mkrel 1
 License:	LGPLv2+
 Group:		System/Libraries
@@ -77,16 +76,13 @@ Requires:	common-licenses
 BuildRequires:	gettext-devel
 BuildRequires:  libglib2.0-devel >= %{req_glib_version}
 BuildRequires:	libatk1.0-devel >= %{req_atk_version}
-BuildRequires:	libjpeg-devel
-BuildRequires:	libpng-devel
-BuildRequires:	libtiff-devel
 BuildRequires:  cairo-devel >= %{req_cairo_version}
 BuildRequires:	pango-devel >= %{req_pango_version}
+BuildRequires:	libgdk_pixbuf2.0-devel
 BuildRequires:  gobject-introspection-devel >= 0.6.14-2mdv
 BuildRequires:  X11-devel
 BuildRequires:  cups-devel
 BuildRequires:  fam-devel
-BuildRequires:  jasper-devel
 %if %enable_tests
 %if %mdkversion <= 200600
 BuildRequires:	XFree86-Xvfb
@@ -146,7 +142,7 @@ Provides:	%{libname}-devel = %{version}-%{release}
 Provides:	lib%{pkgname}-x11-%{api_version}-devel = %{version}-%{release}
 Requires:	%{libname} = %{version}
 Requires:	%{libname_x11} = %{version}
-Requires:	%{libname_pixbuf}-devel = %{version}
+Requires:	libgdk_pixbuf2.0-devel
 Requires:	libatk1.0-devel >= %{req_atk_version}
 Requires:	libpango1.0-devel >= %{req_pango_version}
 
@@ -159,33 +155,11 @@ for writing GTK+ widgets and using GTK+ widgets in applications), and GTK+
 (the widget set).
 
 
-%package -n %{libname_pixbuf}
-Summary:	Image loading and manipulation library for GTK+
-Group:		System/Libraries
-Provides:	libgdk_pixbuf%{api_version} = %{version}-%{release}
-Requires(post):		libtiff >= 3.6.1
-
-%description -n %{libname_pixbuf}
-This package contains libraries used by GTK+ to load and handle
-various image formats.
-
-%package -n %{libname_pixbuf}-devel
-Summary:	Development files for image handling library for GTK+
-Group:		Development/GNOME and GTK+
-Provides:	libgdk_pixbuf%{api_version}-devel = %{version}-%{release}
-Requires:	%{libname_pixbuf} = %{version}
-Requires:	libglib2.0-devel >= %{req_glib_version}
-
-%description -n %{libname_pixbuf}-devel
-This package contains the development files needed to compile programs
-that uses GTK+ image loading/manipulation library.
-
 %package -n %{libname_x11}
 Summary:	X11 backend of The GIMP ToolKit (GTK+)
 Group:		System/Libraries
 Provides:	lib%{pkgname}-x11-%{api_version} = %{version}-%{release}
 Provides:	%{name}-backend = %{version}-%{release}
-Requires(post):		%{libname_pixbuf} = %{version}
 Requires: 	%{libname} = %{version}
 Requires:	%{name} >= %{version}-%{release}
 
@@ -304,10 +278,6 @@ kill $(cat /tmp/.X$XDISPLAY-lock) ||:
 %install
 rm -rf $RPM_BUILD_ROOT
 
-# Avoid conflict with different ChangeLogs
-cp ./contrib/gdk-pixbuf-xlib/ChangeLog ./contrib/gdk-pixbuf-xlib/ChangeLog-gdk-pixbuf-xlib
-cp ./gdk-pixbuf/ChangeLog ./gdk-pixbuf/ChangeLog-gdk-pixbuf
-
 %if %build_fb
 cd fb-build
 %makeinstall_std RUN_QUERY_IMMODULES_TEST=false RUN_QUERY_LOADER_TEST=false
@@ -320,11 +290,10 @@ cd ..
 #cd ..
 
 touch $RPM_BUILD_ROOT%_libdir/gtk-%{api_version}/3.0.0/immodules.cache
-touch $RPM_BUILD_ROOT%_libdir/gtk-%{api_version}/3.0.0/loaders.cache
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/gtk-%{api_version}/modules
 
 # handle biarch packages
-progs="gtk-query-immodules-%{api_version} gdk-pixbuf-query-loaders-%{api_version}"
+progs="gtk-query-immodules-%{api_version}"
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/gtk-%{api_version}/bin
 for f in $progs; do
   mv -f $RPM_BUILD_ROOT%{_bindir}/$f $RPM_BUILD_ROOT%{_libdir}/gtk-%{api_version}/bin/
@@ -352,19 +321,6 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/gtk-%{api_version}/%{binary_version}.*/immodules
 
 %clean
 rm -rf $RPM_BUILD_ROOT
-
-%post -n %{libname_pixbuf}
-%if %mdkversion < 200900
-/sbin/ldconfig
-%endif
-
-if [ "$1" = "2" ]; then
-  if [ -f %{_sysconfdir}/gtk-%{api_version}/gdk-pixbuf.loaders ]; then
-    rm -f %{_sysconfdir}/gtk-%{api_version}/gdk-pixbuf.loaders
-  fi
-fi
-
-%{_libdir}/gtk-%{api_version}/bin/gdk-pixbuf-query-loaders-%{api_version} >  %_libdir/gtk-%{api_version}/3.0.0/loaders.cache
 
 %if %mdkversion < 200900
 %postun -n %{libname_pixbuf} -p /sbin/ldconfig
@@ -407,10 +363,8 @@ fi
 %files -f gtk30.lang
 %defattr(-, root, root)
 %doc README
-%{_bindir}/gdk-pixbuf-query-loaders-%{api_version}
 %{_bindir}/gtk-query-immodules-%{api_version}
 %{_bindir}/gtk-update-icon-cache-%{api_version}
-%_mandir/man1/gdk-pixbuf-query-loaders-%{api_version}.1*
 %_mandir/man1/gtk-query-immodules-%{api_version}.1*
 %_mandir/man1/gtk-update-icon-cache-%{api_version}.1*
 %{_datadir}/themes
@@ -455,29 +409,6 @@ fi
 %_datadir/gir-1.0/Gtk-%{api_version}.gir
 %attr(644,root,root) %{_libdir}/*x11*.la
 %{_libdir}/pkgconfig/*x11*
-
-
-%files -n %{libname_pixbuf}
-%defattr(-, root, root)
-%{_libdir}/libgdk_pixbuf*.so.*
-%_libdir/girepository-1.0/GdkPixbuf-%{api_version}.typelib
-%dir %{_libdir}/gtk-%{api_version}/%{binary_version}.*/loaders
-%{_libdir}/gtk-%{api_version}/%{binary_version}.*/loaders/*.so
-%{_libdir}/gtk-%{api_version}/bin/gdk-pixbuf-query-loaders-%api_version
-%ghost %verify (not md5 mtime size) %_libdir/gtk-%{api_version}/3.0.0/loaders.cache
-
-%files -n %{libname_pixbuf}-devel
-%defattr(-, root, root)
-%doc contrib/gdk-pixbuf-xlib/ChangeLog-* gdk-pixbuf/ChangeLog-*
-%doc %{_datadir}/gtk-doc/html/gdk-pixbuf3
-%{_bindir}/gdk-pixbuf-csource-%{api_version}
-%_mandir/man1/gdk-pixbuf-csource-%{api_version}.1*
-%dir %{_includedir}/gtk-%{api_version}
-%{_includedir}/gtk-%{api_version}/gdk-pixbuf*
-%_datadir/gir-1.0/GdkPixbuf-%{api_version}.gir
-%{_libdir}/libgdk_pixbuf*.so
-%attr(644,root,root) %{_libdir}/libgdk_pixbuf*.la
-%{_libdir}/pkgconfig/gdk-pixbuf*.pc
 
 
 %files -n %{libname_x11}
