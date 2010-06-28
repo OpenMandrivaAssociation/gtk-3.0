@@ -1,8 +1,3 @@
-# build_fb: Build frame buffer backend 
-#	0 = no
-#	1 = yes
-%define build_fb	0
-
 # enable_gtkdoc: Toggle if gtk-doc files should be rebuilt.
 #      0 = no
 #      1 = yes
@@ -19,12 +14,10 @@
 %define enable_tests 0
 
 %{?_without_gtkdoc: %{expand: %%define enable_gtkdoc 0}}
-%{?_without_fb: %{expand: %%define build_fb 0}}
 %{?_without_bootstrap: %{expand: %%define enable_bootstrap 0}}
 %{?_without_tests: %{expand: %%define enable_tests 0}}
 
 %{?_with_gtkdoc: %{expand: %%define enable_gtkdoc 1}}
-%{?_with_fb: %{expand: %%define build_fb 1}}
 %{?_with_bootstrap: %{expand: %%define enable_bootstrap 1}}
 %{?_with_tests: %{expand: %%define enable_tests 1}}
 
@@ -41,7 +34,7 @@
 %define lib_major		0
 %define libname			%mklibname %{pkgname} %{api_version} %{lib_major}
 %define libname_x11		%mklibname %{pkgname}-x11- %{api_version} %{lib_major}
-%define libname_linuxfb %mklibname %{pkgname}-linuxfb- %{api_version} %{lib_major}
+%define develname		%mklibname -d %pkgname %api_version
 
 %define gail_major 0
 %define gail_libname %mklibname gail %api_version %gail_major
@@ -131,7 +124,7 @@ Requires(post): 	%{libname_x11} = %{version}
 This package contains the library needed to run programs dynamically
 linked with gtk+.
 
-%package -n %{libname}-devel
+%package -n %{develname}
 Summary:	Development files for GTK+ (GIMP ToolKit) applications
 Group:		Development/GNOME and GTK+
 Provides:   %{libname_x11}-devel = %{version}-%{release}
@@ -147,7 +140,7 @@ Requires:	libatk1.0-devel >= %{req_atk_version}
 Requires:	libpango1.0-devel >= %{req_pango_version}
 
 
-%description -n %{libname}-devel
+%description -n %{develname}
 The libgtk+-devel package contains the static libraries and header files
 needed for developing GTK+ (GIMP ToolKit) applications. The libgtk+-devel
 package contains GDK (the General Drawing Kit, which simplifies the interface
@@ -167,34 +160,6 @@ Requires:	%{name} >= %{version}-%{release}
 This package contains the X11 version of library needed to run
 programs dynamically linked with gtk+.
 
-%if 0
-%package -n %{libname_linuxfb}
-Summary:	Frame-Buffer backend of The GIMP ToolKit (GTK+)
-Group:		System/Libraries
-Provides:	%{libname}-linuxfb-%{api_version} = %{version}-%{release}
-Provides:	%{name}-backend = %{version}-%{release}
-Requires(post):		%{libname_pixbuf} = %{version}
-Requires(post):		%{libname} = %{version}
-Requires:	%{name} >= %{version}-%{release}
-
-%description -n %{libname_linuxfb}
-This package contains the Frame Buffer version of library needed to run
-programs dynamically linked with gtk+.
-
-%package -n %{libname_linuxfb}-devel
-Summary:	Development files for frame-buffer backend of GTK+
-Group:		Development/GNOME and GTK+
-Provides:	lib%{pkgname}-linuxfb-%{api_version}-devel = %{version}-%{release}
-Requires:   %{libname}-devel = %{version}
-Requires:	%{libname_linuxfb} = %{version}
-Requires:	%{libname_pixbuf}-devel = %{version}
-Requires:	libatk1.0-devel >= %{req_atk_version}
-Requires:	libpango1.0-devel >= %{req_pango_version}
-
-%description -n %{libname_linuxfb}-devel
-This package contains the development files needed to compile programs
-with gtk+ Frame Buffer.
-%endif
 
 %package -n %{gail_libname}
 Summary:	GNOME Accessibility Implementation Library
@@ -247,19 +212,6 @@ export CPPFLAGS="-DGTK_COMPILATION"
 	--enable-gtk-doc=no
 %endif
 
-#cd ..
-# Then build frame buffer counterpart
-%if %build_fb
-[ -d fb-build ] || mkdir fb-build
-cd fb-build
-CONFIGURE_TOP=.. %configure2_5x \
-	--with-gdktarget=linux-fb \
-	--enable-gtk-doc=no
-
-%make
-cd ..
-%endif
-
 %check
 %if %enable_tests
 #cd X11-build
@@ -278,16 +230,7 @@ kill $(cat /tmp/.X$XDISPLAY-lock) ||:
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%if %build_fb
-cd fb-build
-%makeinstall_std RUN_QUERY_IMMODULES_TEST=false RUN_QUERY_LOADER_TEST=false
-cd ..
-%endif
-
-#cd X11-build
 %makeinstall_std mandir=%{_mandir} RUN_QUERY_IMMODULES_TEST=false RUN_QUERY_LOADER_TEST=false
-
-#cd ..
 
 touch $RPM_BUILD_ROOT%_libdir/gtk-%{api_version}/3.0.0/immodules.cache
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/gtk-%{api_version}/modules
@@ -343,15 +286,6 @@ fi
 
 %{_libdir}/gtk-%{api_version}/bin/gtk-query-immodules-%{api_version} > %_libdir/gtk-%{api_version}/3.0.0/immodules.cache
 
-%if %{build_fb}
-%if %mdkversion < 200900
-%post -n %{libname_linuxfb} -p /sbin/ldconfig
-%endif
-%if %mdkversion < 200900
-%postun -n %{libname_linuxfb} -p /sbin/ldconfig
-%endif
-%endif
-
 %post 
 if [ -d %{_datadir}/icons ]; then
  for i in `/bin/ls %{_datadir}/icons` ; do 
@@ -386,7 +320,7 @@ fi
 %{_libdir}/gtk-%{api_version}/%{binary_version}.*/engines/*.so
 %{_libdir}/gtk-%{api_version}/%{binary_version}.*/printbackends/*.so
 
-%files -n %{libname}-devel
+%files -n %{develname}
 %defattr(-, root, root)
 %doc docs/*.txt AUTHORS ChangeLog NEWS* README*
 %doc %{_datadir}/gtk-doc/html/gdk3
@@ -417,18 +351,6 @@ fi
 %_libdir/girepository-1.0/Gdk-%{api_version}.typelib
 %_libdir/girepository-1.0/GdkX11-%{api_version}.typelib
 %_libdir/girepository-1.0/Gtk-%{api_version}.typelib
-
-%if %build_fb
-%files -n %{libname_linuxfb}
-%defattr(-, root, root)
-%{_libdir}/*linux-fb*.so.*
-
-%files -n %{libname_linuxfb}-devel
-%defattr(-, root, root)
-%{_libdir}/*linux-fb*.so
-%attr(644,root,root) %{_libdir}/*linux-fb*.la
-%{_libdir}/pkgconfig/*linux-fb*
-%endif
 
 %files -n %gail_libname
 %defattr(-,root,root)
