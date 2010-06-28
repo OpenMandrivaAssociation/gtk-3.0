@@ -196,14 +196,9 @@ autoreconf -fi
 export CFLAGS="$RPM_OPT_FLAGS -mminimal-toc"
 %endif
 
-# Build X11 backend
-#[ -d X11-build ] || mkdir X11-build
-#cd X11-build
-
 # fix crash in nautilus (GNOME bug #596977)
 export CFLAGS=`echo $RPM_OPT_FLAGS | sed -e 's/-fomit-frame-pointer//g'`
 
-#CONFIGURE_TOP=.. 
 export CPPFLAGS="-DGTK_COMPILATION"
 %define _disable_ld_no_undefined 1
 %configure2_5x --enable-xinerama \
@@ -214,7 +209,6 @@ export CPPFLAGS="-DGTK_COMPILATION"
 
 %check
 %if %enable_tests
-#cd X11-build
 XDISPLAY=$(i=1; while [ -f /tmp/.X$i-lock ]; do i=$(($i+1)); done; echo $i)
 %if %mdkversion <= 200600
 %{_prefix}/X11R6/bin/Xvfb :$XDISPLAY &
@@ -224,7 +218,6 @@ XDISPLAY=$(i=1; while [ -f /tmp/.X$i-lock ]; do i=$(($i+1)); done; echo $i)
 export DISPLAY=:$XDISPLAY
 make check
 kill $(cat /tmp/.X$XDISPLAY-lock) ||:
-#cd ..
 %endif
 
 %install
