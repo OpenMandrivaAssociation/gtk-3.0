@@ -27,6 +27,7 @@
 %define req_pango_version		1.20.0
 %define req_atk_version			1.29.4
 %define req_cairo_version		1.6.0
+%define req_gdk_pixbuf_version		2.21.0
 
 %define pkgname			gtk+
 %define api_version		3.0
@@ -71,7 +72,7 @@ BuildRequires:  libglib2.0-devel >= %{req_glib_version}
 BuildRequires:	libatk1.0-devel >= %{req_atk_version}
 BuildRequires:  cairo-devel >= %{req_cairo_version}
 BuildRequires:	pango-devel >= %{req_pango_version}
-BuildRequires:	libgdk_pixbuf2.0-devel
+BuildRequires:	libgdk_pixbuf2.0-devel >= %req_gdk_pixbuf_version
 BuildRequires:  gobject-introspection-devel >= 0.6.14-2mdv
 BuildRequires:  X11-devel
 BuildRequires:  cups-devel
@@ -135,7 +136,7 @@ Provides:	%{libname}-devel = %{version}-%{release}
 Provides:	lib%{pkgname}-x11-%{api_version}-devel = %{version}-%{release}
 Requires:	%{libname} = %{version}
 Requires:	%{libname_x11} = %{version}
-Requires:	libgdk_pixbuf2.0-devel
+Requires:	libgdk_pixbuf2.0-devel >= %req_gdk_pixbuf_version
 Requires:	libatk1.0-devel >= %{req_atk_version}
 Requires:	libpango1.0-devel >= %{req_pango_version}
 
