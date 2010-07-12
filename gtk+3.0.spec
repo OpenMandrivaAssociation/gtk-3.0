@@ -23,10 +23,10 @@
 
 
 # required version of various libraries
-%define req_glib_version		2.25.9
+%define req_glib_version		2.25.11
 %define req_pango_version		1.20.0
 %define req_atk_version			1.29.4
-%define req_cairo_version		1.6.0
+%define req_cairo_version		1.9.10
 %define req_gdk_pixbuf_version		2.21.0
 
 %define pkgname			gtk+
@@ -45,7 +45,7 @@
 
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
-Version:	2.90.4
+Version:	2.90.5
 Release:        %mkrel 1
 License:	LGPLv2+
 Group:		System/Libraries
@@ -58,8 +58,6 @@ Patch5:		gtk+-2.6.9-fileselectorfallback.patch
 Patch12:	gtk+-defaulttheme.patch
 # (fc) 2.18.2-2mdv fix nautilus crash (GNOME bug #596977) (pterjan)
 Patch15:	gtk+-2.18.1-fixnautiluscrash.patch
-# (fc) 2.20.0-2mdv improve tooltip appareance (GNOME bug #599617) (Fedora)
-Patch18:	gtk+-2.90.2-fresh-tooltips.patch
 # (fc) 2.20.0-2mdv allow window dragging toolbars / menubar (GNOME bug #611313)
 Patch20:	gtk+-2.20.0-window-dragging.patch
 
@@ -186,7 +184,6 @@ Gail is the GNOME Accessibility Implementation Library
 #%patch5 -p1 -b .fileselectorfallback
 %patch12 -p1 -b .defaulttheme
 #patch15 -p1 -b .fixnautiluscrash
-%patch18 -p1 -b .fresh-tooltips
 %patch20 -p1 -b .window-dragging
 
 #needed by patches 4 & 13
