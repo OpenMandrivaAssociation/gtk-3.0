@@ -198,12 +198,13 @@ export CFLAGS="$RPM_OPT_FLAGS -mminimal-toc"
 export CFLAGS=`echo $RPM_OPT_FLAGS | sed -e 's/-fomit-frame-pointer//g'`
 
 export CPPFLAGS="-DGTK_COMPILATION"
-%define _disable_ld_no_undefined 1
 %configure2_5x --enable-xinerama \
 	--with-xinput=xfree \
 %if !%enable_gtkdoc
 	--enable-gtk-doc=no
 %endif
+
+%make
 
 %check
 %if %enable_tests
