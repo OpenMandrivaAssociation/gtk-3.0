@@ -91,7 +91,7 @@ BuildRequires: texinfo
 BuildRequires: fonts-ttf-dejavu
 %if !%{enable_bootstrap}
 Suggests: xdg-user-dirs-gtk
-Suggests: ia_ora-gnome
+#Suggests: ia_ora-gnome
 %endif
 Requires: %{libname} = %{version}
 Provides:	%{pkgname}3 = %{version}-%{release}
