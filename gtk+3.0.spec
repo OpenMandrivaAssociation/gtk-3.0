@@ -45,21 +45,15 @@
 
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
-Version:	2.90.5
+Version:	2.90.6
 Release:        %mkrel 1
 License:	LGPLv2+
 Group:		System/Libraries
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/%pkgname/%{pkgname}-%{version}.tar.bz2
 # extra IM modules (vietnamese and tamil) -- pablo
 Patch4:		gtk+-2.13.1-extra_im.patch 
-# (fc) 2.0.6-8mdk fix infinite loop and crash in file selector when / and $HOME are not readable (bug #90)
-Patch5:		gtk+-2.6.9-fileselectorfallback.patch
 # (fc) 2.4.0-2mdk use Ia Ora theme by default if available
 Patch12:	gtk+-defaulttheme.patch
-# (fc) 2.18.2-2mdv fix nautilus crash (GNOME bug #596977) (pterjan)
-Patch15:	gtk+-2.18.1-fixnautiluscrash.patch
-# (fc) 2.20.0-2mdv allow window dragging toolbars / menubar (GNOME bug #611313)
-Patch20:	gtk+-2.20.0-window-dragging.patch
 
 BuildRoot:	%{_tmppath}/%{name}-%{version}-buildroot
 
@@ -179,14 +173,9 @@ Gail is the GNOME Accessibility Implementation Library
 
 %prep
 %setup -n %{pkgname}-%{version} -q
-%patch4 -p1 -b .extra_im
-#gw obsolete?
-#%patch5 -p1 -b .fileselectorfallback
-%patch12 -p1 -b .defaulttheme
-#patch15 -p1 -b .fixnautiluscrash
-%patch20 -p1 -b .window-dragging
+%apply_patches
 
-#needed by patches 4 & 13
+#needed by patch 4
 autoreconf -fi
 
 %build
