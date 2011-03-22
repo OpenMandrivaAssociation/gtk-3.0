@@ -23,11 +23,11 @@
 
 
 # required version of various libraries
-%define req_glib_version		2.25.11
-%define req_pango_version		1.20.0
-%define req_atk_version			1.29.4
-%define req_cairo_version		1.9.10
-%define req_gdk_pixbuf_version		2.21.0
+%define req_glib_version		2.28.0
+%define req_pango_version		1.24.0
+%define req_atk_version			1.30
+%define req_cairo_version		1.10.0
+%define req_gdk_pixbuf_version		2.22.0
 
 %define pkgname			gtk+
 %define api_version		3.0
@@ -45,18 +45,12 @@
 
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
-Version:	2.90.7
+Version:	3.0.4
 Release:        %mkrel 1
 License:	LGPLv2+
 Group:		System/Libraries
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/%pkgname/%{pkgname}-%{version}.tar.bz2
-# extra IM modules (vietnamese and tamil) -- pablo
-#Patch4:		gtk+-2.13.1-extra_im.patch 
-# (fc) 2.4.0-2mdk use Ia Ora theme by default if available
-Patch12:	gtk+-defaulttheme.patch
-
 BuildRoot:	%{_tmppath}/%{name}-%{version}-buildroot
-
 URL:		http://www.gtk.org
 Requires:	common-licenses
 BuildRequires:	gettext-devel
@@ -65,16 +59,12 @@ BuildRequires:	libatk1.0-devel >= %{req_atk_version}
 BuildRequires:  cairo-devel >= %{req_cairo_version}
 BuildRequires:	pango-devel >= %{req_pango_version}
 BuildRequires:	libgdk_pixbuf2.0-devel >= %req_gdk_pixbuf_version
-BuildRequires:  gobject-introspection-devel >= 0.9.5
+BuildRequires:  gobject-introspection-devel >= 0.10.1
 BuildRequires:  X11-devel
 BuildRequires:  cups-devel
 BuildRequires:  fam-devel
 %if %enable_tests
-%if %mdkversion <= 200600
-BuildRequires:	XFree86-Xvfb
-%else
 BuildRequires:  x11-server-xvfb
-%endif
 %endif
 %if %enable_gtkdoc
 BuildRequires: gtk-doc >= 0.9 
@@ -85,7 +75,6 @@ BuildRequires: texinfo
 BuildRequires: fonts-ttf-dejavu
 %if !%{enable_bootstrap}
 Suggests: xdg-user-dirs-gtk
-#Suggests: ia_ora-gnome
 %endif
 Requires: %{libname} = %{version}
 Provides:	%{pkgname}3 = %{version}-%{release}
@@ -109,9 +98,6 @@ Requires:   libglib2.0 >= %{req_glib_version}
 Requires:   libpango1.0 >= %{req_pango_version}
 Requires:   libatk1.0 >= %{req_atk_version}
 Requires(post): 	%{libname_x11} = %{version}
-#%if !%{enable_bootstrap}
-#Suggests: %{_lib}ia_ora-gnome
-#%endif
 
 %description -n %{libname}
 This package contains the library needed to run programs dynamically
@@ -131,7 +117,6 @@ Requires:	%{libname_x11} = %{version}
 Requires:	libgdk_pixbuf2.0-devel >= %req_gdk_pixbuf_version
 Requires:	libatk1.0-devel >= %{req_atk_version}
 Requires:	libpango1.0-devel >= %{req_pango_version}
-
 
 %description -n %{develname}
 The libgtk+-devel package contains the static libraries and header files
@@ -175,9 +160,6 @@ Gail is the GNOME Accessibility Implementation Library
 %setup -n %{pkgname}-%{version} -q
 %apply_patches
 
-#needed by patch 4
-#autoreconf -fi
-
 %build
 %ifarch ppc64
 export CFLAGS="$RPM_OPT_FLAGS -mminimal-toc"
@@ -188,7 +170,6 @@ export CFLAGS=`echo $RPM_OPT_FLAGS | sed -e 's/-fomit-frame-pointer//g'`
 
 export CPPFLAGS="-DGTK_COMPILATION"
 %configure2_5x --enable-xinerama \
-	--with-xinput=xfree \
 %if !%enable_gtkdoc
 	--enable-gtk-doc=no
 %endif
