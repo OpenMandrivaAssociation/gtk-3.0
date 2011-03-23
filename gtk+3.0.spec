@@ -134,7 +134,7 @@ for writing GTK+ widgets and using GTK+ widgets in applications), and GTK+
 Summary:	GNOME Accessibility Implementation Library
 Group:		System/Libraries
 Provides:	libgail = %{version}-%{release}
-Obsoletes:	%{_lib}gail3.0_0 < 3.0.0
+#Obsoletes:	%{_lib}gail3.0_0 < 3.0.0
 
 %description -n %{gail_libname}
 Gail is the GNOME Accessibility Implementation Library
