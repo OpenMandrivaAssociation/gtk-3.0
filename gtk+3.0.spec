@@ -212,23 +212,23 @@ if [ "$1" = "2" ]; then
   fi
 fi
 %if %_lib != lib
- %{_bindir}/gtk-query-immodules-%{api_version}-64 > %_libdir/gtk-%{api_version}/%{binary_version}/immodules.cache
+ %{_bindir}/gtk-query-immodules-%{api_version}-64 --update-cache
 %else
- %{_bindir}/gtk-query-immodules-%{api_version}-32 > %_libdir/gtk-%{api_version}/%{binary_version}/immodules.cache
+ %{_bindir}/gtk-query-immodules-%{api_version}-32 --update-cache
 %endif
 
 %triggerin -n %{libname} -- %{_libdir}/gtk-%{api_version}/%{binary_version}/immodules/*.so
 %if %_lib != lib
- %{_bindir}/gtk-query-immodules-%{api_version}-64 > %_libdir/gtk-%{api_version}/%{binary_version}/immodules.cache
+ %{_bindir}/gtk-query-immodules-%{api_version}-64 --update-cache
 %else
- %{_bindir}/gtk-query-immodules-%{api_version}-32 > %_libdir/gtk-%{api_version}/%{binary_version}/immodules.cache
+ %{_bindir}/gtk-query-immodules-%{api_version}-32 --update-cache
 %endif
 
 %triggerpostun -n %{libname} -- %{_libdir}/gtk-%{api_version}/%{binary_version}/immodules/*.so
 %if %_lib != lib
- %{_bindir}/gtk-query-immodules-%{api_version}-64 > %_libdir/gtk-%{api_version}/%{binary_version}/immodules.cache
+ %{_bindir}/gtk-query-immodules-%{api_version}-64 --update-cache
 %else
- %{_bindir}/gtk-query-immodules-%{api_version}-32 > %_libdir/gtk-%{api_version}/%{binary_version}/immodules.cache
+ %{_bindir}/gtk-query-immodules-%{api_version}-32 --update-cache
 %endif
 
 %files -f gtk30.lang
