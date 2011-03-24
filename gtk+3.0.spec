@@ -44,7 +44,7 @@
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
 Version:	3.0.5
-Release:        %mkrel 1
+Release:        %mkrel 2
 License:	LGPLv2+
 Group:		System/Libraries
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/%pkgname/%{pkgname}-%{version}.tar.bz2
@@ -134,7 +134,7 @@ for writing GTK+ widgets and using GTK+ widgets in applications), and GTK+
 Summary:	GNOME Accessibility Implementation Library
 Group:		System/Libraries
 Provides:	libgail = %{version}-%{release}
-#Obsoletes:	%{_lib}gail3.0_0 < 3.0.0
+Obsoletes:	%{_lib}gail3.0_0 < 3.0.0
 
 %description -n %{gail_libname}
 Gail is the GNOME Accessibility Implementation Library
