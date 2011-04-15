@@ -68,6 +68,8 @@ BuildRequires:	libxinerama-devel
 BuildRequires:	libxcomposite-devel
 BuildRequires:	libxdamage-devel
 BuildRequires:	libxi-devel
+#gw needed for gtk-update-icon-cache in gtk+3.0 3.0.9
+BuildRequires:	gtk+2.0
 %if %enable_tests
 BuildRequires:  x11-server-xvfb
 %endif
