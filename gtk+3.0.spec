@@ -43,12 +43,11 @@
 
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
-Version:	3.0.11
-Release:        %mkrel 1
+Version:	3.3.2
+Release:	1
 License:	LGPLv2+
 Group:		System/Libraries
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/%pkgname/%{pkgname}-%{version}.tar.xz
-BuildRoot:	%{_tmppath}/%{name}-%{version}-buildroot
 URL:		http://www.gtk.org
 Requires:	common-licenses
 BuildRequires:	gettext-devel
@@ -121,9 +120,6 @@ Provides:	lib%{pkgname}%{api_version}-devel = %{version}-%{release}
 Provides:	lib%{pkgname}-x11-%{api_version}-devel = %{version}-%{release}
 Provides:	%{name}-devel = %{version}-%{release}
 Requires:	%{libname} = %{version}
-Requires:	libgdk_pixbuf2.0-devel >= %req_gdk_pixbuf_version
-Requires:	libatk1.0-devel >= %{req_atk_version}
-Requires:	libpango1.0-devel >= %{req_pango_version}
 
 %description -n %{develname}
 The libgtk+-devel package contains the static libraries and header files
@@ -281,8 +277,6 @@ fi
 %files -n %gail_libname
 %defattr(-,root,root)
 %{_libdir}/libgailutil-%{api}.so.%{gail_major}*
-%{_libdir}/gtk-%{api_version}/modules/libferret.so
-%{_libdir}/gtk-%{api_version}/modules/libgail.so
 
 %files -n %gaildevelname
 %defattr(-,root,root)
