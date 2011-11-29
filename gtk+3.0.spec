@@ -187,7 +187,7 @@ mkdir -p %{buildroot}%{_libdir}/gtk-%{api_version}/modules
  mv %{buildroot}%{_bindir}/gtk-query-immodules-%{api_version} %{buildroot}%{_bindir}/gtk-query-immodules-%{api_version}-32
 %endif
 
-%{find_lang} gtk30 gtk30 gtk30-properties
+%find_lang gtk30 gtk30-properties gtk30.lang
 
 #remove not packaged files
 rm -f %{buildroot}%{_mandir}/man1/gtk-update-icon-cache.1*
