@@ -20,18 +20,18 @@
 
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
-Version:	3.3.2
+Version:	3.3.4
 Release:	1
 License:	LGPLv2+
 Group:		System/Libraries
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/%pkgname/%{pkgname}-%{version}.tar.xz
 URL:		http://www.gtk.org
+Source0:	http://ftp.gnome.org/pub/GNOME/sources/%pkgname/%{pkgname}-%{version}.tar.xz
 
 BuildRequires:  cups-devel
-#BuildRequires:  fam-devel
 BuildRequires:  gettext-devel
 BuildRequires:  pkgconfig(atk) >= 1.29.2
 BuildRequires:  pkgconfig(cairo) >= 1.6.0
+#BuildRequires:  pkgconfig(colord)
 BuildRequires:  pkgconfig(gdk-pixbuf-2.0) >= 2.21.0
 BuildRequires:  pkgconfig(glib-2.0) >= 2.25.10
 BuildRequires:  pkgconfig(gobject-introspection-1.0) >= 0.9.5
@@ -49,7 +49,7 @@ BuildRequires:  pkgconfig(xrandr)
 BuildRequires:  pkgconfig(xrender)
 
 #gw needed for gtk-update-icon-cache in gtk+3.0 3.0.9
-#BuildRequires:	gtk+2.0
+BuildRequires:	gtk+2.0
 
 %if %enable_tests
 BuildRequires:  x11-server-xvfb
@@ -113,11 +113,10 @@ package contains GDK (the General Drawing Kit, which simplifies the interface
 for writing GTK+ widgets and using GTK+ widgets in applications), and GTK+
 (the widget set).
 
-
 %package -n %{libname}
 Summary:    Shared libraries of The GIMP ToolKit (GTK+)
 Group:      System/Libraries
-Conflicts:  %{modulesname} <= 3.3.2-1
+Conflicts:  %{libname} <= 3.3.2-1
 
 %description -n %{libname}
 This package contains the shared libraries needed to run programs dynamically 
@@ -127,7 +126,7 @@ linked with gtk+.
 Summary:    GObject Introspection interface description for %{name}
 Group:      System/Libraries
 Requires:   %{libname} = %{version}-%{release}
-Conflicts:  %{modulesname} <= 3.3.2-1
+Conflicts:  %{libname} <= 3.3.2-1
 
 %description -n %{libgir}
 GObject Introspection interface description for %{name}.
