@@ -2,30 +2,30 @@
 %define enable_bootstrap 0
 %define enable_tests 0
 
-%define pkgname			gtk+
-%define api				3
-%define api_version		3.0
+%define pkgname		gtk+
+%define api		3
+%define api_version	3.0
 %define binary_version	3.0.0
-%define lib_major		0
+%define major		0
+%define libname		%mklibname %{pkgname} %{api} %{major}
+%define develname	%mklibname -d %{pkgname} %{api_version}
 # this isnt really a true lib pkg, but a modules/plugin pkg
-%define modulesname		%mklibname %{pkgname} %{api}
-%define libname			%mklibname %{pkgname} %{api} %{lib_major}
-%define develname		%mklibname -d %pkgname %{api_version}
+%define modules		%mklibname gtk-modules %{api_version}
 
-%define gail_major 0
-%define libgail %mklibname gail %{api} %gail_major
-%define develgail %mklibname -d gail %{api_version}
+%define gail_major	0
+%define libgail		%mklibname gail %{api} %gail_major
+%define develgail	%mklibname -d gail %{api_version}
 
-%define libgir %mklibname gtk-gir %{api_version}
+%define libgir		%mklibname gtk-gir %{api_version}
 
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
 Version:	3.3.4
-Release:	1
+Release:	2
 License:	LGPLv2+
 Group:		System/Libraries
 URL:		http://www.gtk.org
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/%pkgname/%{pkgname}-%{version}.tar.xz
+Source0:	http://ftp.gnome.org/pub/GNOME/sources/%{pkgname}/%{pkgname}-%{version}.tar.xz
 
 BuildRequires:  cups-devel
 BuildRequires:  gettext-devel
@@ -64,7 +64,7 @@ BuildRequires: texlive-texinfo
 %if !%{enable_bootstrap}
 Suggests: xdg-user-dirs-gtk
 %endif
-Requires: %{name}-common = %{version}-%{release}
+Requires:	%{name}-common = %{version}-%{release}
 Obsoletes:	gtk-engines3 < 3.0.0
 Provides:	%{pkgname}%{api} = %{version}-%{release}
 
@@ -78,31 +78,33 @@ If you are planning on using the GIMP or another program that uses GTK+,
 you'll need to have the gtk+ package installed.
 
 %package common
-Summary:    %{summary}
-Group:      %{group}
-BuildArch:  noarch
-Conflicts:  %{name} <= 3.3.2-1
+Summary:	%{summary}
+Group:		%{group}
+BuildArch:	noarch
+Conflicts:	%{name} < 3.3.2-2
 
 %description common
 This package contains the common files for the GTK+3.0 graphical user interface.
 
-%package -n %{modulesname}
-Summary: %{summary}
-Group:	 %{group}
-Requires:   %{name} = %{version}-%{release}
+%package -n %{modules}
+Summary:	%{summary}
+Group:		%{group}
+Requires:	%{name} = %{version}-%{release}
+Provides:	gtk%{api}-modules = %{version}-%{release}
+Obsoletes:	%{_lib}gtk+3 < 3.3.4-2
 Obsoletes:	%{_lib}gtk+3.0_0 < 3.0.0
 Obsoletes:	%{_lib}gtk+-x11-3.0_0 < 3.0.0
 Obsoletes:	%{_lib}gtk-engines3 < 3.0.0
 
-%description -n %{modulesname}
+%description -n %{modules}
 This package contains the immodules, engines and printbackends libraries
 for %{name} to function properly.
 
 %package -n %{develname}
 Summary:	Development files for GTK+ (GIMP ToolKit) applications
 Group:		Development/GNOME and GTK+
-Requires:   %{libname} = %{version}-%{release}
-Requires:   %{libgir} = %{version}-%{release}
+Requires:	%{libname} = %{version}-%{release}
+Requires:	%{libgir} = %{version}-%{release}
 Provides:	%{pkgname}%{api}-devel = %{version}-%{release}
 Provides:	%{name}-devel = %{version}-%{release}
 
@@ -114,19 +116,20 @@ for writing GTK+ widgets and using GTK+ widgets in applications), and GTK+
 (the widget set).
 
 %package -n %{libname}
-Summary:    Shared libraries of The GIMP ToolKit (GTK+)
-Group:      System/Libraries
-Conflicts:  %{libname} <= 3.3.2-1
+Summary:	Shared libraries of The GIMP ToolKit (GTK+)
+Group:		System/Libraries
+Conflicts:	%{_lib}gtk+3_0 < 3.3.2-2
 
 %description -n %{libname}
 This package contains the shared libraries needed to run programs dynamically 
 linked with gtk+.
 
 %package -n %{libgir}
-Summary:    GObject Introspection interface description for %{name}
-Group:      System/Libraries
-Requires:   %{libname} = %{version}-%{release}
-Conflicts:  %{libname} <= 3.3.2-1
+Summary:	GObject Introspection interface description for %{name}
+Group:		System/Libraries
+Requires:	%{libname} = %{version}-%{release}
+Provides:	gtk%{api}-gir = %{version}-%{release}
+Conflicts:	%{_lib}gtk+3_0 < 3.3.2-2
 
 %description -n %{libgir}
 GObject Introspection interface description for %{name}.
@@ -154,7 +157,7 @@ Gail is the GNOME Accessibility Implementation Library
 
 %build
 # fix crash in nautilus (GNOME bug #596977)
-export CFLAGS=`echo $RPM_OPT_FLAGS | sed -e 's/-fomit-frame-pointer//g'`
+export CFLAGS=`echo %{optflags} | sed -e 's/-fomit-frame-pointer//g'`
 
 export CPPFLAGS="-DGTK_COMPILATION"
 %configure2_5x \
@@ -181,7 +184,7 @@ rm -rf %{buildroot}
 touch %{buildroot}%{_libdir}/gtk-%{api_version}/%{binary_version}/immodules.cache
 mkdir -p %{buildroot}%{_libdir}/gtk-%{api_version}/modules
 
-%if %_lib != lib
+%if "%{_lib}" != "lib"
  mv %{buildroot}%{_bindir}/gtk-query-immodules-%{api_version} %{buildroot}%{_bindir}/gtk-query-immodules-%{api_version}-64
 %else
  mv %{buildroot}%{_bindir}/gtk-query-immodules-%{api_version} %{buildroot}%{_bindir}/gtk-query-immodules-%{api_version}-32
@@ -193,27 +196,27 @@ mkdir -p %{buildroot}%{_libdir}/gtk-%{api_version}/modules
 rm -f %{buildroot}%{_mandir}/man1/gtk-update-icon-cache.1*
 find %{buildroot} -name '*.la' -exec rm -f {} ';'
 
-%post -n %{modulesname}
+%post -n %{modules}
 if [ "$1" = "2" ]; then
   if [ -f %{_sysconfdir}/gtk-%{api_version}/gtk.immodules ]; then
     rm -f %{_sysconfdir}/gtk-%{api_version}/gtk.immodules
   fi
 fi
-%if %_lib != lib
+%if "%{_lib}" != "lib"
  %{_bindir}/gtk-query-immodules-%{api_version}-64 --update-cache
 %else
  %{_bindir}/gtk-query-immodules-%{api_version}-32 --update-cache
 %endif
 
-%triggerin -n %{modulesname} -- %{_libdir}/gtk-%{api_version}/%{binary_version}/immodules/*.so
-%if %_lib != lib
+%triggerin -n %{modules} -- %{_libdir}/gtk-%{api_version}/%{binary_version}/immodules/*.so
+%if "%{_lib}" != "lib"
  %{_bindir}/gtk-query-immodules-%{api_version}-64 --update-cache
 %else
  %{_bindir}/gtk-query-immodules-%{api_version}-32 --update-cache
 %endif
 
-%triggerpostun -n %{modulesname} -- %{_libdir}/gtk-%{api_version}/%{binary_version}/immodules/*.so
-%if %_lib != lib
+%triggerpostun -n %{modules} -- %{_libdir}/gtk-%{api_version}/%{binary_version}/immodules/*.so
+%if "%{_lib}" != "lib"
  %{_bindir}/gtk-query-immodules-%{api_version}-64 --update-cache
 %else
  %{_bindir}/gtk-query-immodules-%{api_version}-32 --update-cache
@@ -230,7 +233,7 @@ fi
 %{_datadir}/themes
 %{_mandir}/man1/gtk-query-immodules-%{api_version}.1*
 
-%files -n %{modulesname}
+%files -n %{modules}
 %ghost %verify (not md5 mtime size) %{_libdir}/gtk-%{api_version}/3.0.0/immodules.cache
 %dir %{_libdir}/gtk-%{api_version}
 %dir %{_libdir}/gtk-%{api_version}/modules
@@ -241,8 +244,8 @@ fi
 %{_libdir}/gtk-%{api_version}/%{binary_version}/printbackends/*.so
 
 %files -n %{libname}
-%{_libdir}/libgtk-3.so.%{lib_major}*
-%{_libdir}/libgdk-3.so.%{lib_major}*
+%{_libdir}/libgtk-3.so.%{major}*
+%{_libdir}/libgdk-3.so.%{major}*
 
 %files -n %{libgir}
 %{_libdir}/girepository-1.0/Gdk-%{api_version}.typelib
