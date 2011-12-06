@@ -47,7 +47,6 @@ BuildRequires:  pkgconfig(xi)
 BuildRequires:  pkgconfig(xinerama)
 BuildRequires:  pkgconfig(xrandr)
 BuildRequires:  pkgconfig(xrender)
-
 #gw needed for gtk-update-icon-cache in gtk+3.0 3.0.9
 BuildRequires:	gtk+2.0
 
@@ -65,6 +64,12 @@ BuildRequires: texlive-texinfo
 Suggests: xdg-user-dirs-gtk
 %endif
 Requires:	%{name}-common = %{version}-%{release}
+# MD to pull in all the orphaned module loaders
+Requires:	fontconfig
+Requires:	gdk-pixbuf2.0
+Requires:	gio2.0
+Requires:	pango-modules
+
 Obsoletes:	gtk-engines3 < 3.0.0
 Provides:	%{pkgname}%{api} = %{version}-%{release}
 
