@@ -32,11 +32,11 @@ BuildRequires:  gettext-devel
 BuildRequires:  pkgconfig(atk) >= 1.29.2
 BuildRequires:  pkgconfig(cairo) >= 1.6.0
 #BuildRequires:  pkgconfig(colord)
-BuildRequires:  pkgconfig(gdk-pixbuf-2.0) >= 2.21.0
+BuildRequires:  pkgconfig(gdk-pixbuf-2.0) >= 2.26
 BuildRequires:  pkgconfig(glib-2.0) >= 2.25.10
 BuildRequires:  pkgconfig(gobject-introspection-1.0) >= 0.9.5
-BuildRequires:  pkgconfig(pango) >= 1.20.0
-BuildRequires:  pkgconfig(pangocairo) >= 1.20.0
+BuildRequires:  pkgconfig(pango) >= 1.30
+BuildRequires:  pkgconfig(pangocairo) >= 1.30
 BuildRequires:  pkgconfig(x11)
 BuildRequires:  pkgconfig(xcomposite)
 BuildRequires:  pkgconfig(xcursor)
