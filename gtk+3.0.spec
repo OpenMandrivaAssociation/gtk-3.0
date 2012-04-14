@@ -235,6 +235,7 @@ fi
 %dir %{_sysconfdir}/gtk-%{api_version}
 %config(noreplace) %{_sysconfdir}/gtk-%{api_version}/im-multipress.conf
 %{_datadir}/glib-2.0/schemas/org.gtk.Settings.FileChooser.gschema.xml
+%{_datadir}/glib-2.0/schemas/org.gtk.Settings.ColorChooser.gschema.xml
 %{_datadir}/themes
 %{_mandir}/man1/gtk-query-immodules-%{api_version}.1*
 
