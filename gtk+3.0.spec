@@ -260,6 +260,8 @@ fi
 %files -n %{develname}
 %doc docs/*.txt AUTHORS ChangeLog NEWS* README*
 %{_bindir}/gtk3-demo
+%{_bindir}/gtk3-demo-application
+%{_bindir}/gtk3-widget-factory
 %{_includedir}/gtk-%{api_version}
 %{_libdir}/libgtk-%{api}.so
 %{_libdir}/libgdk-%{api}.so
@@ -270,6 +272,7 @@ fi
 %{_datadir}/gir-1.0/Gdk-%{api_version}.gir
 %{_datadir}/gir-1.0/GdkX11-%{api_version}.gir
 %{_datadir}/gir-1.0/Gtk-%{api_version}.gir
+%_datadir/glib-2.0/schemas/org.gtk.Demo.gschema.xml
 %doc %{_datadir}/gtk-doc/html/gdk3
 %doc %{_datadir}/gtk-doc/html/gtk3
 
