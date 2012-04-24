@@ -21,7 +21,7 @@
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
 Version:	3.4.1
-Release:	2
+Release:	3
 License:	LGPLv2+
 Group:		System/Libraries
 URL:		http://www.gtk.org
@@ -61,6 +61,10 @@ BuildRequires: sgml-tools
 BuildRequires: texlive-texinfo
 %endif
 %if !%{enable_bootstrap}
+# md these are reqd for typelib reqs generation
+BuildRequires:	typelib(Atk)
+BuildRequires:	typelib(GdkPixbuf)
+BuildRequires:	typelib(Pango)
 Suggests: xdg-user-dirs-gtk
 %endif
 Requires:	%{name}-common = %{version}-%{release}
