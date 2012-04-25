@@ -21,7 +21,7 @@
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
 Version:	3.4.1
-Release:	3
+Release:	4
 License:	LGPLv2+
 Group:		System/Libraries
 URL:		http://www.gtk.org
@@ -113,6 +113,7 @@ for %{name} to function properly.
 Summary:	Development files for GTK+ (GIMP ToolKit) applications
 Group:		Development/GNOME and GTK+
 Requires:	%{libname} = %{version}-%{release}
+Requires:       %{libgir} = %{version}-%{release}
 Provides:	%{pkgname}%{api}-devel = %{version}-%{release}
 Provides:	%{name}-devel = %{version}-%{release}
 
