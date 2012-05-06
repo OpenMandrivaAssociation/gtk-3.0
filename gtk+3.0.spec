@@ -1,3 +1,4 @@
+%define url_ver %(echo %{version}|cut -d. -f1,2)
 %define enable_gtkdoc 0
 %define enable_bootstrap 0
 %define enable_tests 0
@@ -20,12 +21,12 @@
 
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
-Version:	3.4.1
-Release:	4
+Version:	3.4.2
+Release:	1
 License:	LGPLv2+
 Group:		System/Libraries
 URL:		http://www.gtk.org
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/%{pkgname}/%{pkgname}-%{version}.tar.xz
+Source0:	http://ftp.gnome.org/pub/GNOME/sources/gtk+/%{url_ver}/%{pkgname}-%{version}.tar.xz
 
 BuildRequires:  cups-devel
 BuildRequires:  gettext-devel
@@ -61,10 +62,6 @@ BuildRequires: sgml-tools
 BuildRequires: texlive-texinfo
 %endif
 %if !%{enable_bootstrap}
-# md these are reqd for typelib reqs generation
-BuildRequires:	typelib(Atk)
-BuildRequires:	typelib(GdkPixbuf)
-BuildRequires:	typelib(Pango)
 Suggests: xdg-user-dirs-gtk
 %endif
 Requires:	%{name}-common = %{version}-%{release}
@@ -72,6 +69,7 @@ Requires:	%{name}-common = %{version}-%{release}
 Requires:	fontconfig
 Requires:	gdk-pixbuf2.0
 Requires:	gio2.0
+Requires:	glib2.0-common
 Requires:	pango-modules
 
 Obsoletes:	gtk-engines3 < 3.0.0
