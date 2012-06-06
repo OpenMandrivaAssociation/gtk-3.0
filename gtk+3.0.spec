@@ -22,7 +22,7 @@
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
 Version:	3.4.3
-Release:	1
+Release:	2
 License:	LGPLv2+
 Group:		System/Libraries
 URL:		http://www.gtk.org
@@ -91,7 +91,8 @@ BuildArch:	noarch
 Conflicts:	%{name} < 3.3.2-2
 
 %description common
-This package contains the common files for the GTK+3.0 graphical user interface.
+This package contains the common files for the GTK+3.0 graphical user
+interface.
 
 %package -n %{modules}
 Summary:	%{summary}
