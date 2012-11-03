@@ -2,66 +2,65 @@
 %define enable_bootstrap 0
 %define enable_tests 0
 
-%define pkgname		gtk+
-%define api		3
-%define api_version	3.0
-%define binary_version	3.0.0
-%define major		0
-%define libname		%mklibname %{pkgname} %{api} %{major}
-%define develname	%mklibname -d %{pkgname} %{api_version}
+%define pkgname gtk+
+%define api 3
+%define api_version 3.0
+%define binary_version 3.0.0
+%define major 0
+%define libname %mklibname %{pkgname} %{api} %{major}
+%define develname %mklibname -d %{pkgname} %{api_version}
 # this isnt really a true lib pkg, but a modules/plugin pkg
-%define modules		%mklibname gtk-modules %{api_version}
+%define modules %mklibname gtk-modules %{api_version}
 
-%define gail_major	0
-%define libgail		%mklibname gail %{api} %gail_major
-%define develgail	%mklibname -d gail %{api_version}
-
-%define libgir		%mklibname gtk-gir %{api_version}
+%define gail_major 0
+%define libgail %mklibname gail %{api} %gail_major
+%define develgail %mklibname -d gail %{api_version}
+%define libgir %mklibname gtk-gir %{api_version}
 
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
 Version:	3.4.4
-Release:	1
+Release:	2
 License:	LGPLv2+
 Group:		System/Libraries
 URL:		http://www.gtk.org
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/gtk+/%{pkgname}-%{version}.tar.xz
 
-BuildRequires:  cups-devel
-BuildRequires:  gettext-devel
-BuildRequires:  pkgconfig(atk) >= 1.29.2
-BuildRequires:  pkgconfig(cairo) >= 1.6.0
-#BuildRequires:  pkgconfig(colord)
-BuildRequires:  pkgconfig(gdk-pixbuf-2.0) >= 2.26
-BuildRequires:  pkgconfig(glib-2.0) >= 2.25.10
-BuildRequires:  pkgconfig(gobject-introspection-1.0) >= 0.9.5
-BuildRequires:  pkgconfig(pango) >= 1.30
-BuildRequires:  pkgconfig(pangocairo) >= 1.30
-BuildRequires:  pkgconfig(x11)
-BuildRequires:  pkgconfig(xcomposite)
-BuildRequires:  pkgconfig(xcursor)
-BuildRequires:  pkgconfig(xdamage)
-BuildRequires:  pkgconfig(xext)
-BuildRequires:  pkgconfig(xfixes)
-BuildRequires:  pkgconfig(xi)
-BuildRequires:  pkgconfig(xinerama)
-BuildRequires:  pkgconfig(xrandr)
-BuildRequires:  pkgconfig(xrender)
+BuildRequires:	cups-devel
+BuildRequires:	gettext-devel
+BuildRequires:	pkgconfig(atk) >= 1.29.2
+BuildRequires:	pkgconfig(cairo) >= 1.12.0
+#BuildRequires:	pkgconfig(colord)
+BuildRequires:	pkgconfig(gdk-pixbuf-2.0) >= 2.26
+BuildRequires:	pkgconfig(glib-2.0) >= 2.25.10
+BuildRequires:	pkgconfig(gobject-introspection-1.0) >= 0.9.5
+BuildRequires:	pkgconfig(pango) >= 1.30
+BuildRequires:	pkgconfig(pangocairo) >= 1.30
+BuildRequires:	pkgconfig(x11)
+BuildRequires:	pkgconfig(xcomposite)
+BuildRequires:	pkgconfig(xcursor)
+BuildRequires:	pkgconfig(xdamage)
+BuildRequires:	pkgconfig(xext)
+BuildRequires:	pkgconfig(xfixes)
+BuildRequires:	pkgconfig(xi)
+BuildRequires:	pkgconfig(xinerama)
+BuildRequires:	pkgconfig(xrandr)
+BuildRequires:	pkgconfig(xrender)
 #gw needed for gtk-update-icon-cache in gtk+3.0 3.0.9
 BuildRequires:	gtk+2.0
 
 %if %enable_tests
-BuildRequires:  x11-server-xvfb
+BuildRequires:	x11-server-xvfb
 # gw tests will fail without this
-BuildRequires: fonts-ttf-dejavu
+BuildRequires:	fonts-ttf-dejavu
 %endif
 %if %enable_gtkdoc
-BuildRequires: gtk-doc >= 0.9 
-BuildRequires: sgml-tools
-BuildRequires: texlive-texinfo
+BuildRequires:	gtk-doc >= 0.9 
+BuildRequires:	sgml-tools
+BuildRequires:	texlive-texinfo
 %endif
 %if !%{enable_bootstrap}
-Suggests: xdg-user-dirs-gtk
+Suggests:	xdg-user-dirs-gtk
 %endif
 Requires:	%{name}-common = %{version}-%{release}
 # MD to pull in all the orphaned module loaders
@@ -111,7 +110,7 @@ for %{name} to function properly.
 Summary:	Development files for GTK+ (GIMP ToolKit) applications
 Group:		Development/GNOME and GTK+
 Requires:	%{libname} = %{version}-%{release}
-Requires:       %{libgir} = %{version}-%{release}
+Requires:	%{libgir} = %{version}-%{release}
 Provides:	%{pkgname}%{api}-devel = %{version}-%{release}
 Provides:	%{name}-devel = %{version}-%{release}
 
@@ -145,7 +144,7 @@ Group:		System/Libraries
 Obsoletes:	%{_lib}gail3.0_0 < 3.0.0
 
 %description -n %{libgail}
-Gail is the GNOME Accessibility Implementation Library
+Gail is the GNOME Accessibility Implementation Library.
 
 %package -n %{develgail}
 Summary:	Development libraries, include files for GAIL
@@ -170,6 +169,9 @@ export CPPFLAGS="-DGTK_COMPILATION"
 	--enable-xinerama \
 	--enable-gtk2-dependency
 
+# fight unused direct deps
+sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+
 %make
 
 %check
@@ -182,8 +184,6 @@ kill $(cat /tmp/.X$XDISPLAY-lock) ||:
 %endif
 
 %install
-rm -rf %{buildroot}
-
 %makeinstall_std RUN_QUERY_IMMODULES_TEST=false RUN_QUERY_LOADER_TEST=false
 
 touch %{buildroot}%{_libdir}/gtk-%{api_version}/%{binary_version}/immodules.cache
@@ -285,4 +285,3 @@ fi
 %{_libdir}/libgailutil-%{api}.so
 %{_libdir}/pkgconfig/gail-%{api_version}.pc
 %{_datadir}/gtk-doc/html/gail-libgail-util3
-
