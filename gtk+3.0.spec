@@ -2,40 +2,42 @@
 %define enable_bootstrap 0
 %define enable_tests 0
 
-%define pkgname gtk+
-%define api 3
-%define api_version 3.0
-%define binary_version 3.0.0
-%define major 0
-%define libname %mklibname %{pkgname} %{api} %{major}
-%define develname %mklibname -d %{pkgname} %{api_version}
+%define pkgname		gtk+
+%define api		3
+%define api_version	3.0
+%define binary_version	3.0.0
+%define major		0
+%define libname		%mklibname %{pkgname} %{api} %{major}
+%define devname		%mklibname -d %{pkgname} %{api_version}
 # this isnt really a true lib pkg, but a modules/plugin pkg
-%define modules %mklibname gtk-modules %{api_version}
+%define modules		%mklibname gtk-modules %{api_version}
 
-%define gail_major 0
-%define libgail %mklibname gail %{api} %gail_major
-%define develgail %mklibname -d gail %{api_version}
-%define libgir %mklibname gtk-gir %{api_version}
+%define gail_major	0
+%define libgail		%mklibname gail %{api} %{gail_major}
+%define devgail		%mklibname -d gail %{api_version}
+
+%define libgir		%mklibname gtk-gir %{api_version}
 
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
-Version:	3.4.4
-Release:	2
+Version:	3.6.2
+Release:	1
 License:	LGPLv2+
 Group:		System/Libraries
 URL:		http://www.gtk.org
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/gtk+/%{pkgname}-%{version}.tar.xz
+Source0:	http://ftp.gnome.org/pub/GNOME/sources/gtk+/3.6/%{pkgname}-%{version}.tar.xz
 
 BuildRequires:	cups-devel
 BuildRequires:	gettext-devel
 BuildRequires:	pkgconfig(atk) >= 1.29.2
-BuildRequires:	pkgconfig(cairo) >= 1.12.0
+BuildRequires:	pkgconfig(cairo) >= 1.6.0
 #BuildRequires:	pkgconfig(colord)
 BuildRequires:	pkgconfig(gdk-pixbuf-2.0) >= 2.26
 BuildRequires:	pkgconfig(glib-2.0) >= 2.25.10
 BuildRequires:	pkgconfig(gobject-introspection-1.0) >= 0.9.5
 BuildRequires:	pkgconfig(pango) >= 1.30
 BuildRequires:	pkgconfig(pangocairo) >= 1.30
+BuildRequires:	pkgconfig(atk-bridge-2.0) >= 2.6.0
 BuildRequires:	pkgconfig(x11)
 BuildRequires:	pkgconfig(xcomposite)
 BuildRequires:	pkgconfig(xcursor)
@@ -49,13 +51,13 @@ BuildRequires:	pkgconfig(xrender)
 #gw needed for gtk-update-icon-cache in gtk+3.0 3.0.9
 BuildRequires:	gtk+2.0
 
-%if %enable_tests
+%if %{enable_tests}
 BuildRequires:	x11-server-xvfb
 # gw tests will fail without this
-BuildRequires:	fonts-ttf-dejavu
+BuildRequires	fonts-ttf-dejavu
 %endif
-%if %enable_gtkdoc
-BuildRequires:	gtk-doc >= 0.9 
+%if %{enable_gtkdoc}
+BuildRequires:	gtk-doc >= 0.9
 BuildRequires:	sgml-tools
 BuildRequires:	texlive-texinfo
 %endif
@@ -106,7 +108,7 @@ Obsoletes:	%{_lib}gtk-engines3 < 3.0.0
 This package contains the immodules, engines and printbackends libraries
 for %{name} to function properly.
 
-%package -n %{develname}
+%package -n %{devname}
 Summary:	Development files for GTK+ (GIMP ToolKit) applications
 Group:		Development/GNOME and GTK+
 Requires:	%{libname} = %{version}-%{release}
@@ -114,7 +116,7 @@ Requires:	%{libgir} = %{version}-%{release}
 Provides:	%{pkgname}%{api}-devel = %{version}-%{release}
 Provides:	%{name}-devel = %{version}-%{release}
 
-%description -n %{develname}
+%description -n %{devname}
 The libgtk+-devel package contains the static libraries and header files
 needed for developing GTK+ (GIMP ToolKit) applications. The libgtk+-devel
 package contains GDK (the General Drawing Kit, which simplifies the interface
@@ -144,15 +146,15 @@ Group:		System/Libraries
 Obsoletes:	%{_lib}gail3.0_0 < 3.0.0
 
 %description -n %{libgail}
-Gail is the GNOME Accessibility Implementation Library.
+Gail is the GNOME Accessibility Implementation Library
 
-%package -n %{develgail}
+%package -n %{devgail}
 Summary:	Development libraries, include files for GAIL
 Group:		Development/GNOME and GTK+
 Provides:	libgail-%{api_version}-devel = %{version}-%{release}
 Requires:	%{libgail} = %{version}
 
-%description -n %{develgail}
+%description -n %{devgail}
 Gail is the GNOME Accessibility Implementation Library
 
 %prep
@@ -168,9 +170,6 @@ export CPPFLAGS="-DGTK_COMPILATION"
 	--disable-static \
 	--enable-xinerama \
 	--enable-gtk2-dependency
-
-# fight unused direct deps
-sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
 
 %make
 
@@ -199,7 +198,6 @@ mkdir -p %{buildroot}%{_libdir}/gtk-%{api_version}/modules
 
 #remove not packaged files
 rm -f %{buildroot}%{_mandir}/man1/gtk-update-icon-cache.1*
-find %{buildroot} -name '*.la' -exec rm -f {} ';'
 
 %post -n %{modules}
 if [ "$1" = "2" ]; then
@@ -230,6 +228,7 @@ fi
 %files
 %doc README
 %{_bindir}/gtk-query-immodules-%{api_version}-*
+%{_bindir}/gtk-launch
 
 %files common -f gtk30.lang
 %dir %{_sysconfdir}/gtk-%{api_version}
@@ -238,16 +237,15 @@ fi
 %{_datadir}/glib-2.0/schemas/org.gtk.Settings.ColorChooser.gschema.xml
 %{_datadir}/themes
 %{_mandir}/man1/gtk-query-immodules-%{api_version}.1*
+%{_mandir}/man1/gtk-launch.1*
 
 %files -n %{modules}
 %ghost %verify (not md5 mtime size) %{_libdir}/gtk-%{api_version}/3.0.0/immodules.cache
 %dir %{_libdir}/gtk-%{api_version}
 %dir %{_libdir}/gtk-%{api_version}/modules
 %dir %{_libdir}/gtk-%{api_version}/%{binary_version}
-%dir %{_libdir}/gtk-%{api_version}/%{binary_version}/immodules
-%dir %{_libdir}/gtk-%{api_version}/%{binary_version}/printbackends
-%{_libdir}/gtk-%{api_version}/%{binary_version}/immodules/*.so
-%{_libdir}/gtk-%{api_version}/%{binary_version}/printbackends/*.so
+%{_libdir}/gtk-%{api_version}/%{binary_version}/immodules
+%{_libdir}/gtk-%{api_version}/%{binary_version}/printbackends
 
 %files -n %{libname}
 %{_libdir}/libgtk-3.so.%{major}*
@@ -258,7 +256,7 @@ fi
 %{_libdir}/girepository-1.0/GdkX11-%{api_version}.typelib
 %{_libdir}/girepository-1.0/Gtk-%{api_version}.typelib
 
-%files -n %{develname}
+%files -n %{devname}
 %doc docs/*.txt AUTHORS ChangeLog NEWS* README*
 %{_bindir}/gtk3-demo
 %{_bindir}/gtk3-demo-application
@@ -280,8 +278,9 @@ fi
 %files -n %{libgail}
 %{_libdir}/libgailutil-%{api}.so.%{gail_major}*
 
-%files -n %{develgail}
+%files -n %{devgail}
 %{_includedir}/gail-%{api_version}
 %{_libdir}/libgailutil-%{api}.so
 %{_libdir}/pkgconfig/gail-%{api_version}.pc
 %{_datadir}/gtk-doc/html/gail-libgail-util3
+
