@@ -1,3 +1,5 @@
+%define url_ver %(echo %{version}|cut -d. -f1,2)
+
 %define enable_gtkdoc 0
 %define enable_bootstrap 0
 %define enable_tests 0
@@ -6,26 +8,26 @@
 %define api		3
 %define api_version	3.0
 %define binary_version	3.0.0
-%define major		0
-%define libname		%mklibname %{pkgname} %{api} %{major}
-%define devname		%mklibname -d %{pkgname} %{api_version}
+%define major	0
+%define libname	%mklibname %{pkgname} %{api} %{major}
+%define girname	%mklibname gtk-gir %{api_version}
+%define devname	%mklibname -d %{pkgname} %{api_version}
 # this isnt really a true lib pkg, but a modules/plugin pkg
-%define modules		%mklibname gtk-modules %{api_version}
+%define modules	%mklibname gtk-modules %{api_version}
 
-%define gail_major	0
-%define libgail		%mklibname gail %{api} %{gail_major}
-%define devgail		%mklibname -d gail %{api_version}
+%define gailmaj	0
+%define libgail	%mklibname gail %{api} %{gailmaj}
+%define devgail	%mklibname -d gail %{api_version}
 
-%define libgir		%mklibname gtk-gir %{api_version}
 
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
-Version:	3.6.2
+Version:	3.6.3
 Release:	1
 License:	LGPLv2+
 Group:		System/Libraries
 URL:		http://www.gtk.org
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/gtk+/3.6/%{pkgname}-%{version}.tar.xz
+Source0:	http://ftp.gnome.org/pub/GNOME/sources/gtk+/%{url_ver}/%{pkgname}-%{version}.tar.xz
 
 BuildRequires:	cups-devel
 BuildRequires:	gettext-devel
@@ -112,7 +114,7 @@ for %{name} to function properly.
 Summary:	Development files for GTK+ (GIMP ToolKit) applications
 Group:		Development/GNOME and GTK+
 Requires:	%{libname} = %{version}-%{release}
-Requires:	%{libgir} = %{version}-%{release}
+Requires:	%{girname} = %{version}-%{release}
 Provides:	%{pkgname}%{api}-devel = %{version}-%{release}
 Provides:	%{name}-devel = %{version}-%{release}
 
@@ -132,12 +134,12 @@ Conflicts:	%{_lib}gtk+3_0 < 3.3.2-2
 This package contains the shared libraries needed to run programs dynamically 
 linked with gtk+.
 
-%package -n %{libgir}
+%package -n %{girname}
 Summary:	GObject Introspection interface description for %{name}
 Group:		System/Libraries
 Conflicts:	%{_lib}gtk+3_0 < 3.3.2-2
 
-%description -n %{libgir}
+%description -n %{girname}
 GObject Introspection interface description for %{name}.
 
 %package -n %{libgail}
@@ -248,10 +250,10 @@ fi
 %{_libdir}/gtk-%{api_version}/%{binary_version}/printbackends
 
 %files -n %{libname}
-%{_libdir}/libgtk-3.so.%{major}*
-%{_libdir}/libgdk-3.so.%{major}*
+%{_libdir}/libgtk-%{api}.so.%{major}*
+%{_libdir}/libgdk-%{api}.so.%{major}*
 
-%files -n %{libgir}
+%files -n %{girname}
 %{_libdir}/girepository-1.0/Gdk-%{api_version}.typelib
 %{_libdir}/girepository-1.0/GdkX11-%{api_version}.typelib
 %{_libdir}/girepository-1.0/Gtk-%{api_version}.typelib
@@ -276,7 +278,7 @@ fi
 %doc %{_datadir}/gtk-doc/html/gtk3
 
 %files -n %{libgail}
-%{_libdir}/libgailutil-%{api}.so.%{gail_major}*
+%{_libdir}/libgailutil-%{api}.so.%{gailmaj}*
 
 %files -n %{devgail}
 %{_includedir}/gail-%{api_version}
