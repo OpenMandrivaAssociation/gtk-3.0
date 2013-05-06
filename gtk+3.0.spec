@@ -22,7 +22,7 @@
 
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
-Version:	3.6.4
+Version:	3.8.1
 Release:	1
 License:	LGPLv2+
 Group:		System/Libraries
@@ -240,6 +240,7 @@ fi
 %{_datadir}/themes
 %{_mandir}/man1/gtk-query-immodules-%{api_version}.1*
 %{_mandir}/man1/gtk-launch.1*
+%{_mandir}/man1/broadwayd.1.*
 
 %files -n %{modules}
 %ghost %verify (not md5 mtime size) %{_libdir}/gtk-%{api_version}/3.0.0/immodules.cache
