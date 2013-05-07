@@ -9,7 +9,10 @@
 %define api_version	3.0
 %define binary_version	3.0.0
 %define major	0
-%define libname	%mklibname %{pkgname} %{api} %{major}
+%define libgdk	%mklibname gdk %{api} %{major}
+%define libgtk	%mklibname gtk %{api} %{major}
+%define girgdk	%mklibname gdk-gir %{api_version}
+%define girgdkx11 %mklibname gdkx11-gir %{api_version}
 %define girname	%mklibname gtk-gir %{api_version}
 %define devname	%mklibname -d %{pkgname} %{api_version}
 # this isnt really a true lib pkg, but a modules/plugin pkg
@@ -23,10 +26,10 @@
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
 Version:	3.8.1
-Release:	1
+Release:	2
 License:	LGPLv2+
 Group:		System/Libraries
-URL:		http://www.gtk.org
+Url:		http://www.gtk.org
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/gtk+/%{url_ver}/%{pkgname}-%{version}.tar.xz
 
 BuildRequires:	cups-devel
@@ -110,29 +113,39 @@ Obsoletes:	%{_lib}gtk-engines3 < 3.0.0
 This package contains the immodules, engines and printbackends libraries
 for %{name} to function properly.
 
-%package -n %{devname}
-Summary:	Development files for GTK+ (GIMP ToolKit) applications
-Group:		Development/GNOME and GTK+
-Requires:	%{libname} = %{version}-%{release}
-Requires:	%{girname} = %{version}-%{release}
-Provides:	%{pkgname}%{api}-devel = %{version}-%{release}
-Provides:	%{name}-devel = %{version}-%{release}
-
-%description -n %{devname}
-The libgtk+-devel package contains the static libraries and header files
-needed for developing GTK+ (GIMP ToolKit) applications. The libgtk+-devel
-package contains GDK (the General Drawing Kit, which simplifies the interface
-for writing GTK+ widgets and using GTK+ widgets in applications), and GTK+
-(the widget set).
-
-%package -n %{libname}
+%package -n %{libgdk}
 Summary:	Shared libraries of The GIMP ToolKit (GTK+)
 Group:		System/Libraries
-Conflicts:	%{_lib}gtk+3_0 < 3.3.2-2
+Conflicts:	%{_lib}gtk+3_0 < 3.8.1-2
 
-%description -n %{libname}
-This package contains the shared libraries needed to run programs dynamically 
-linked with gtk+.
+%description -n %{libgdk}
+This package contains a shared library for %{name}.
+
+%package -n %{libgtk}
+Summary:	Shared libraries of The GIMP ToolKit (GTK+)
+Group:		System/Libraries
+Obsoletes:	%{_lib}gtk+3_0 < 3.8.1-2
+
+%description -n %{libgtk}
+This package contains a shared library for %{name}.
+
+%package -n %{girgdk}
+Summary:	GObject Introspection interface description for %{name}
+Group:		System/Libraries
+Conflicts:	%{_lib}gtk+3_0 < 3.3.2-2
+Conflicts:	%{_lib}gtk-gir3.0 < 3.8.1-2
+
+%description -n %{girgdk}
+GObject Introspection interface description for %{name}.
+
+%package -n %{girgdkx11}
+Summary:	GObject Introspection interface description for %{name}
+Group:		System/Libraries
+Conflicts:	%{_lib}gtk+3_0 < 3.3.2-2
+Conflicts:	%{_lib}gtk-gir3.0 < 3.8.1-2
+
+%description -n %{girgdkx11}
+GObject Introspection interface description for %{name}.
 
 %package -n %{girname}
 Summary:	GObject Introspection interface description for %{name}
@@ -141,6 +154,20 @@ Conflicts:	%{_lib}gtk+3_0 < 3.3.2-2
 
 %description -n %{girname}
 GObject Introspection interface description for %{name}.
+
+%package -n %{devname}
+Summary:	Development files for GTK+ (GIMP ToolKit) applications
+Group:		Development/GNOME and GTK+
+Requires:	%{libgdk} = %{version}-%{release}
+Requires:	%{libgtk} = %{version}-%{release}
+Requires:	%{girgdk} = %{version}-%{release}
+Requires:	%{girgdkx11} = %{version}-%{release}
+Requires:	%{girname} = %{version}-%{release}
+Provides:	%{pkgname}%{api}-devel = %{version}-%{release}
+Provides:	%{name}-devel = %{version}-%{release}
+
+%description -n %{devname}
+This package contains the development files for %{name}.
 
 %package -n %{libgail}
 Summary:	GNOME Accessibility Implementation Library
@@ -240,7 +267,7 @@ fi
 %{_datadir}/themes
 %{_mandir}/man1/gtk-query-immodules-%{api_version}.1*
 %{_mandir}/man1/gtk-launch.1*
-%{_mandir}/man1/broadwayd.1.*
+%{_mandir}/man1/broadwayd.1*
 
 %files -n %{modules}
 %ghost %verify (not md5 mtime size) %{_libdir}/gtk-%{api_version}/3.0.0/immodules.cache
@@ -250,13 +277,19 @@ fi
 %{_libdir}/gtk-%{api_version}/%{binary_version}/immodules
 %{_libdir}/gtk-%{api_version}/%{binary_version}/printbackends
 
-%files -n %{libname}
-%{_libdir}/libgtk-%{api}.so.%{major}*
+%files -n %{libgdk}
 %{_libdir}/libgdk-%{api}.so.%{major}*
 
-%files -n %{girname}
+%files -n %{libgtk}
+%{_libdir}/libgtk-%{api}.so.%{major}*
+
+%files -n %{girgdk}
 %{_libdir}/girepository-1.0/Gdk-%{api_version}.typelib
+
+%files -n %{girgdkx11}
 %{_libdir}/girepository-1.0/GdkX11-%{api_version}.typelib
+
+%files -n %{girname}
 %{_libdir}/girepository-1.0/Gtk-%{api_version}.typelib
 
 %files -n %{devname}
