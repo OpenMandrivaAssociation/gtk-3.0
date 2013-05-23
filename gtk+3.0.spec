@@ -21,12 +21,13 @@
 %define gailmaj	0
 %define libgail	%mklibname gail %{api} %{gailmaj}
 %define devgail	%mklibname -d gail %{api_version}
+%bcond_with	crossstrap
 
 
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
 Version:	3.8.1
-Release:	2
+Release:	3
 License:	LGPLv2+
 Group:		System/Libraries
 Url:		http://www.gtk.org
@@ -129,6 +130,7 @@ Obsoletes:	%{_lib}gtk+3_0 < 3.8.1-2
 %description -n %{libgtk}
 This package contains a shared library for %{name}.
 
+%if !%{with crossstrap}
 %package -n %{girgdk}
 Summary:	GObject Introspection interface description for %{name}
 Group:		System/Libraries
@@ -154,15 +156,18 @@ Conflicts:	%{_lib}gtk+3_0 < 3.3.2-2
 
 %description -n %{girname}
 GObject Introspection interface description for %{name}.
+%endif
 
 %package -n %{devname}
 Summary:	Development files for GTK+ (GIMP ToolKit) applications
 Group:		Development/GNOME and GTK+
 Requires:	%{libgdk} = %{version}-%{release}
 Requires:	%{libgtk} = %{version}-%{release}
+%if !%{with crossstrap}
 Requires:	%{girgdk} = %{version}-%{release}
 Requires:	%{girgdkx11} = %{version}-%{release}
 Requires:	%{girname} = %{version}-%{release}
+%endif
 Provides:	%{pkgname}%{api}-devel = %{version}-%{release}
 Provides:	%{name}-devel = %{version}-%{release}
 
@@ -198,6 +203,9 @@ export CPPFLAGS="-DGTK_COMPILATION"
 %configure2_5x \
 	--disable-static \
 	--enable-xinerama \
+%if %{with crossstrap}
+	--enable-introspection=no \
+%endif
 	--enable-gtk2-dependency
 
 %make
@@ -283,6 +291,7 @@ fi
 %files -n %{libgtk}
 %{_libdir}/libgtk-%{api}.so.%{major}*
 
+%if !%{with crossstrap}
 %files -n %{girgdk}
 %{_libdir}/girepository-1.0/Gdk-%{api_version}.typelib
 
@@ -291,6 +300,7 @@ fi
 
 %files -n %{girname}
 %{_libdir}/girepository-1.0/Gtk-%{api_version}.typelib
+%endif
 
 %files -n %{devname}
 %doc docs/*.txt AUTHORS ChangeLog NEWS* README*
@@ -304,9 +314,11 @@ fi
 %{_libdir}/pkgconfig/gtk+-*%{api_version}.pc
 %{_datadir}/aclocal/*
 %{_datadir}/gtk-%{api_version}
+%if !%{with crossstrap}
 %{_datadir}/gir-1.0/Gdk-%{api_version}.gir
 %{_datadir}/gir-1.0/GdkX11-%{api_version}.gir
 %{_datadir}/gir-1.0/Gtk-%{api_version}.gir
+%endif
 %_datadir/glib-2.0/schemas/org.gtk.Demo.gschema.xml
 %doc %{_datadir}/gtk-doc/html/gdk3
 %doc %{_datadir}/gtk-doc/html/gtk3
