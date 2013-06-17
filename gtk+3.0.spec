@@ -202,7 +202,14 @@ export CFLAGS=`echo %{optflags} | sed -e 's/-fomit-frame-pointer//g'`
 export CPPFLAGS="-DGTK_COMPILATION"
 %configure2_5x \
 	--disable-static \
+	--enable-xkb \
 	--enable-xinerama \
+	--enable-xrandr \
+	--enable-xfixes \
+	--enable-xcomposite \
+	--enable-xdamage \
+	--enable-x11-backend \
+	--enable-packagekit=yes \
 %if %{with crossstrap}
 	--enable-introspection=no \
 %endif
