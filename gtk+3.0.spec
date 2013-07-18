@@ -79,6 +79,7 @@ Requires:	glib2.0-common
 Requires:	pango-modules
 
 Obsoletes:	gtk-engines3 < 3.0.0
+Obsoletes: %{_lib}gtk+3_0 < 3.8.1-6
 Provides:	%{pkgname}%{api} = %{version}-%{release}
 
 %description
