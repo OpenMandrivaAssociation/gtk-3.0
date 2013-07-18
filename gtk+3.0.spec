@@ -10,7 +10,7 @@
 %define binary_version	3.0.0
 %define major	0
 %define libgdk	%mklibname gdk %{api} %{major}
-%define libgtk	%mklibname gtk+ %{api} %{major}
+%define libgtk	%mklibname gtk %{api} %{major}
 %define girgdk	%mklibname gdk-gir %{api_version}
 %define girgdkx11 %mklibname gdkx11-gir %{api_version}
 %define girname	%mklibname gtk-gir %{api_version}
@@ -27,7 +27,7 @@
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
 Version:	3.8.1
-Release:	5
+Release:	4
 License:	LGPLv2+
 Group:		System/Libraries
 Url:		http://www.gtk.org
