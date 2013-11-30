@@ -26,8 +26,8 @@
 
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
-Version:	3.8.2
-Release:	1
+Version:	3.8.4
+Release:	1.1
 License:	LGPLv2+
 Group:		System/Libraries
 Url:		http://www.gtk.org
@@ -125,7 +125,7 @@ This package contains a shared library for %{name}.
 %package -n %{libgtk}
 Summary:	Shared libraries of The GIMP ToolKit (GTK+)
 Group:		System/Libraries
-Obsoletes:	%{_lib}gtk+3_0 < 3.8.1-2
+Obsoletes:	%{_lib}gtk+3_0 < 3.8.1-6
 
 %description -n %{libgtk}
 This package contains a shared library for %{name}.
