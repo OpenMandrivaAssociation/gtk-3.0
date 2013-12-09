@@ -1,4 +1,5 @@
 sources:
+  gtk+-3.10.1.tar.xz: 6840ce0c7180344b063147332d4bf515a79ccebf
   gtk+-3.6.2.tar.xz: 1afe3ca327f7a55838dd00adf5d4e91ef6437d7b
   gtk+-3.8.1.tar.xz: d8bdeb9161bc3ce5616bc07c058ba52042c94f7a
   gtk+-3.8.4.tar.xz: d4448633071a1c3866ff3c8be331c7bd6c3b3dd7
