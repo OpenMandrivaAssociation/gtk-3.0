@@ -27,7 +27,7 @@
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
 Version:	3.10.8
-Release:	1
+Release:	2
 License:	LGPLv2+
 Group:		System/Libraries
 Url:		http://www.gtk.org
@@ -37,7 +37,7 @@ BuildRequires:	cups-devel
 BuildRequires:	gettext-devel
 BuildRequires:	pkgconfig(atk) >= 1.29.2
 BuildRequires:	pkgconfig(cairo) >= 1.6.0
-#BuildRequires:	pkgconfig(colord)
+BuildRequires:	pkgconfig(colord)
 BuildRequires:	pkgconfig(gdk-pixbuf-2.0) >= 2.26
 BuildRequires:	pkgconfig(glib-2.0) >= 2.25.10
 BuildRequires:	pkgconfig(gobject-introspection-1.0) >= 0.9.5
@@ -202,11 +202,19 @@ export CFLAGS=`echo %{optflags} | sed -e 's/-fomit-frame-pointer//g'`
 export CPPFLAGS="-DGTK_COMPILATION"
 %configure2_5x \
 	--disable-static \
+	--enable-xkb \
 	--enable-xinerama \
+	--enable-xrandr \
+	--enable-xfixes \
+	--enable-xcomposite \
+	--enable-xdamage \
+	--enable-x11-backend \
+	--enable-packagekit=yes \
 %if %{with crossstrap}
 	--enable-introspection=no \
 %endif
-	--enable-gtk2-dependency
+	--enable-gtk2-dependency \
+	--enable-colord
 
 %make
 
