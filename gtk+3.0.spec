@@ -26,7 +26,7 @@
 
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
-Version:	3.12.2
+Version:	3.14.0
 Release:	1
 License:	LGPLv2+
 Group:		System/Libraries
@@ -199,7 +199,6 @@ Gail is the GNOME Accessibility Implementation Library
 # fix crash in nautilus (GNOME bug #596977)
 export CFLAGS=`echo %{optflags} | sed -e 's/-fomit-frame-pointer//g'`
 
-export CPPFLAGS="-DGTK_COMPILATION"
 %configure2_5x \
 	--disable-static \
 	--enable-xkb \
@@ -281,6 +280,7 @@ fi
 %{_datadir}/glib-2.0/schemas/org.gtk.Settings.FileChooser.gschema.xml
 %{_datadir}/glib-2.0/schemas/org.gtk.exampleapp.gschema.xml
 %{_datadir}/glib-2.0/schemas/org.gtk.Settings.ColorChooser.gschema.xml
+%{_datadir}/glib-2.0/schemas/org.gtk.Settings.Debug.gschema.xml
 %{_datadir}/themes
 %{_mandir}/man1/gtk-query-immodules-%{api_version}.1*
 %{_mandir}/man1/gtk-launch.1*
@@ -315,7 +315,9 @@ fi
 %doc docs/*.txt AUTHORS ChangeLog NEWS* README*
 %{_bindir}/gtk3-demo
 %{_bindir}/gtk3-demo-application
+%{_bindir}/gtk3-icon-browser
 %{_bindir}/gtk3-widget-factory
+%{_bindir}/gtk-encode-symbolic-svg
 %{_includedir}/gtk-%{api_version}
 %{_libdir}/libgtk-%{api}.so
 %{_libdir}/libgdk-%{api}.so
@@ -328,9 +330,18 @@ fi
 %{_datadir}/gir-1.0/GdkX11-%{api_version}.gir
 %{_datadir}/gir-1.0/Gtk-%{api_version}.gir
 %endif
+%{_datadir}/applications/gtk3-demo.desktop
+%{_datadir}/applications/gtk3-icon-browser.desktop
+%{_datadir}/applications/gtk3-widget-factory.desktop
+%{_iconsdir}/*/*/*/gtk3-demo.*
+%{_iconsdir}/*/*/*/gtk3-widget-factory.*
 %_datadir/glib-2.0/schemas/org.gtk.Demo.gschema.xml
 %doc %{_datadir}/gtk-doc/html/gdk3
 %doc %{_datadir}/gtk-doc/html/gtk3
+%{_mandir}/man1/gtk3-demo.1*
+%{_mandir}/man1/gtk3-icon-browser.1*
+%{_mandir}/man1/gtk3-widget-factory.1*
+%{_mandir}/man1/gtk-encode-symbolic-svg.1*
 
 %files -n %{libgail}
 %{_libdir}/libgailutil-%{api}.so.%{gailmaj}*
