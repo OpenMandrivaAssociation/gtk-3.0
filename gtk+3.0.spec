@@ -32,6 +32,7 @@ License:	LGPLv2+
 Group:		System/Libraries
 Url:		http://www.gtk.org
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/gtk+/%{url_ver}/%{pkgname}-%{version}.tar.xz
+Patch0:		gtk+-defaulttheme.patch
 
 BuildRequires:	cups-devel
 BuildRequires:	gettext-devel
@@ -199,7 +200,7 @@ Gail is the GNOME Accessibility Implementation Library
 # fix crash in nautilus (GNOME bug #596977)
 export CFLAGS=`echo %{optflags} | sed -e 's/-fomit-frame-pointer//g'`
 
-%configure2_5x \
+%configure \
 	--disable-static \
 	--enable-xkb \
 	--enable-xinerama \
