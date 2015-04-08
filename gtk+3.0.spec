@@ -39,6 +39,7 @@ BuildRequires:	gettext-devel
 BuildRequires:	pkgconfig(atk) >= 1.29.2
 BuildRequires:	pkgconfig(cairo) >= 1.6.0
 BuildRequires:	pkgconfig(colord)
+BuildRequires:	pkgconfig(epoxy)
 BuildRequires:	pkgconfig(gdk-pixbuf-2.0) >= 2.26
 BuildRequires:	pkgconfig(glib-2.0) >= 2.25.10
 BuildRequires:	pkgconfig(gobject-introspection-1.0) >= 0.9.5
