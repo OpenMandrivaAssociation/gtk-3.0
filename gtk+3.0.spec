@@ -210,11 +210,9 @@ export CFLAGS=`echo %{optflags} | sed -e 's/-fomit-frame-pointer//g'`
 	--enable-xcomposite \
 	--enable-xdamage \
 	--enable-x11-backend \
-	--enable-packagekit=yes \
 %if %{with crossstrap}
 	--enable-introspection=no \
 %endif
-	--enable-gtk2-dependency \
 	--enable-colord
 
 %make
@@ -244,6 +242,7 @@ mkdir -p %{buildroot}%{_libdir}/gtk-%{api_version}/modules
 
 #remove not packaged files
 rm -f %{buildroot}%{_mandir}/man1/gtk-update-icon-cache.1*
+rm -f %{buildroot}%{_bindir}/gtk-update-icon-cache
 
 %post -n %{modules}
 if [ "$1" = "2" ]; then
@@ -335,12 +334,12 @@ fi
 %{_datadir}/applications/gtk3-demo.desktop
 %{_datadir}/applications/gtk3-icon-browser.desktop
 %{_datadir}/applications/gtk3-widget-factory.desktop
-%{_iconsdir}/*/*/*/gtk3-demo.*
-%{_iconsdir}/*/*/*/gtk3-widget-factory.*
+%{_iconsdir}/*/*/*/gtk3-demo*
+%{_iconsdir}/*/*/*/gtk3-widget-factory*
 %_datadir/glib-2.0/schemas/org.gtk.Demo.gschema.xml
 %doc %{_datadir}/gtk-doc/html/gdk3
 %doc %{_datadir}/gtk-doc/html/gtk3
-%{_mandir}/man1/gtk3-demo.1*
+%{_mandir}/man1/gtk3-demo*.1*
 %{_mandir}/man1/gtk3-icon-browser.1*
 %{_mandir}/man1/gtk3-widget-factory.1*
 %{_mandir}/man1/gtk-encode-symbolic-svg.1*
