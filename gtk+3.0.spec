@@ -26,8 +26,8 @@
 
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
-Version:	3.16.2
-Release:	2
+Version:	3.18.0
+Release:	1
 License:	LGPLv2+
 Group:		System/Libraries
 Url:		http://www.gtk.org
@@ -319,6 +319,7 @@ fi
 %{_bindir}/gtk3-icon-browser
 %{_bindir}/gtk3-widget-factory
 %{_bindir}/gtk-encode-symbolic-svg
+%{_bindir}/gtk-builder-tool
 %{_includedir}/gtk-%{api_version}
 %{_libdir}/libgtk-%{api}.so
 %{_libdir}/libgdk-%{api}.so
@@ -343,6 +344,7 @@ fi
 %{_mandir}/man1/gtk3-icon-browser.1*
 %{_mandir}/man1/gtk3-widget-factory.1*
 %{_mandir}/man1/gtk-encode-symbolic-svg.1*
+%{_mandir}/man1/gtk-builder-tool.1*
 
 %files -n %{libgail}
 %{_libdir}/libgailutil-%{api}.so.%{gailmaj}*
