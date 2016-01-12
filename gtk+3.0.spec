@@ -27,7 +27,7 @@
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
 Version:	3.18.6
-Release:	1
+Release:	2
 License:	LGPLv2+
 Group:		System/Libraries
 Url:		http://www.gtk.org
@@ -82,6 +82,7 @@ Requires:	pango-modules
 
 Obsoletes:	gtk-engines3 < 3.0.0
 Provides:	%{pkgname}%{api} = %{version}-%{release}
+Suggests:	breeze-gtk
 
 %description
 The gtk+ package contains the GIMP ToolKit (GTK+), a library for creating

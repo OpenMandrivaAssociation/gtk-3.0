@@ -2,4 +2,4 @@
 +++ gtk+-3.11.5/gtk/gtksettingsprivate.h	2014-02-05 00:43:06.610436635 +0100
 @@ -25 +25 @@
 -#define DEFAULT_THEME_NAME      "Adwaita"
-+#define DEFAULT_THEME_NAME      "Breeze-dark-gtk"
++#define DEFAULT_THEME_NAME      "Breeze"
