@@ -327,7 +327,7 @@ fi
 %{_libdir}/libgdk-%{api}.so
 %{_libdir}/pkgconfig/gdk-*%{api_version}.pc
 %{_libdir}/pkgconfig/gtk+-*%{api_version}.pc
-%{_datadir}/gettext/its/*.its
+%{_datadir}/gettext/its/*.*
 %{_datadir}/aclocal/*
 %{_datadir}/gtk-%{api_version}
 %if !%{with crossstrap}
