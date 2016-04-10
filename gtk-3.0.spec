@@ -26,8 +26,8 @@
 
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
-Version:	3.18.6
-Release:	2
+Version:	3.20.2
+Release:	1
 License:	LGPLv2+
 Group:		System/Libraries
 Url:		http://www.gtk.org
@@ -272,7 +272,6 @@ fi
 %endif
 
 %files
-%doc README
 %{_bindir}/gtk-query-immodules-%{api_version}-*
 %{_bindir}/gtk-launch
 
@@ -314,11 +313,13 @@ fi
 %endif
 
 %files -n %{devname}
+%doc README
 %doc docs/*.txt AUTHORS ChangeLog NEWS* README*
 %{_bindir}/gtk3-demo
 %{_bindir}/gtk3-demo-application
 %{_bindir}/gtk3-icon-browser
 %{_bindir}/gtk3-widget-factory
+%{_bindir}/gtk-query-settings
 %{_bindir}/gtk-encode-symbolic-svg
 %{_bindir}/gtk-builder-tool
 %{_includedir}/gtk-%{api_version}
@@ -326,6 +327,7 @@ fi
 %{_libdir}/libgdk-%{api}.so
 %{_libdir}/pkgconfig/gdk-*%{api_version}.pc
 %{_libdir}/pkgconfig/gtk+-*%{api_version}.pc
+%{_datadir}/gettext/its/*.its
 %{_datadir}/aclocal/*
 %{_datadir}/gtk-%{api_version}
 %if !%{with crossstrap}
@@ -342,6 +344,7 @@ fi
 %doc %{_datadir}/gtk-doc/html/gdk3
 %doc %{_datadir}/gtk-doc/html/gtk3
 %{_mandir}/man1/gtk3-demo*.1*
+%{_mandir}/man1/gtk-query-settings.1.xz
 %{_mandir}/man1/gtk3-icon-browser.1*
 %{_mandir}/man1/gtk3-widget-factory.1*
 %{_mandir}/man1/gtk-encode-symbolic-svg.1*
