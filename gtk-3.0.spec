@@ -27,7 +27,7 @@
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
 Version:	3.18.9
-Release:	3
+Release:	4
 License:	LGPLv2+
 Group:		System/Libraries
 Url:		http://www.gtk.org
@@ -112,6 +112,7 @@ Obsoletes:	%{_lib}gtk+3 < 3.3.4-2
 Obsoletes:	%{_lib}gtk+3.0_0 < 3.0.0
 Obsoletes:	%{_lib}gtk+-x11-3.0_0 < 3.0.0
 Obsoletes:	%{_lib}gtk-engines3 < 3.0.0
+Conflicts:	%{name} <3.18.9-4
 
 %description -n %{modules}
 This package contains the immodules, engines and printbackends libraries
@@ -272,8 +273,11 @@ fi
 %endif
 
 %files
+%dir %{_libdir}/gtk-%{api_version}
+%ghost %verify (not md5 mtime size) %{_libdir}/gtk-%{api_version}/%{binary_version}/immodules.cache
 %{_bindir}/gtk-query-immodules-%{api_version}-*
 %{_bindir}/gtk-launch
+
 
 %files common -f gtk30.lang
 %dir %{_sysconfdir}/gtk-%{api_version}
@@ -288,8 +292,6 @@ fi
 %{_mandir}/man1/broadwayd.1*
 
 %files -n %{modules}
-%ghost %verify (not md5 mtime size) %{_libdir}/gtk-%{api_version}/3.0.0/immodules.cache
-%dir %{_libdir}/gtk-%{api_version}
 %dir %{_libdir}/gtk-%{api_version}/modules
 %dir %{_libdir}/gtk-%{api_version}/%{binary_version}
 %{_libdir}/gtk-%{api_version}/%{binary_version}/immodules
@@ -361,4 +363,3 @@ fi
 %{_libdir}/libgailutil-%{api}.so
 %{_libdir}/pkgconfig/gail-%{api_version}.pc
 %{_datadir}/gtk-doc/html/gail-libgail-util3
-
