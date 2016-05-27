@@ -274,6 +274,7 @@ fi
 
 %files
 %dir %{_libdir}/gtk-%{api_version}
+%dir %{_libdir}/gtk-%{api_version}/%{binary_version}
 %ghost %verify (not md5 mtime size) %{_libdir}/gtk-%{api_version}/%{binary_version}/immodules.cache
 %{_bindir}/gtk-query-immodules-%{api_version}-*
 %{_bindir}/gtk-launch
@@ -293,7 +294,6 @@ fi
 
 %files -n %{modules}
 %dir %{_libdir}/gtk-%{api_version}/modules
-%dir %{_libdir}/gtk-%{api_version}/%{binary_version}
 %{_libdir}/gtk-%{api_version}/%{binary_version}/immodules
 %{_libdir}/gtk-%{api_version}/%{binary_version}/printbackends
 
