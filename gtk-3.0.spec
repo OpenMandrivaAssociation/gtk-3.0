@@ -26,8 +26,8 @@
 
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
-Version:	3.18.9
-Release:	4
+Version:	3.22.1
+Release:	1
 License:	LGPLv2+
 Group:		System/Libraries
 Url:		http://www.gtk.org
@@ -55,6 +55,11 @@ BuildRequires:	pkgconfig(xfixes)
 BuildRequires:	pkgconfig(xi)
 BuildRequires:	pkgconfig(xinerama)
 BuildRequires:	pkgconfig(xrandr)
+BuildRequires:	pkgconfig(xkbcommon) >= 0.2.0
+BuildRequires:	pkgconfig(wayland-protocols)
+BuildRequires:	pkgconfig(wayland-client) >= 1.9.91
+BuildRequires:	pkgconfig(wayland-cursor) >= 1.9.91
+BuildRequires:	pkgconfig(wayland-egl)
 BuildRequires:	pkgconfig(xrender)
 #gw needed for gtk-update-icon-cache in gtk+3.0 3.0.9
 BuildRequires:	gtk+2.0
@@ -212,10 +217,15 @@ export CFLAGS=`echo %{optflags} | sed -e 's/-fomit-frame-pointer//g'`
 	--enable-xcomposite \
 	--enable-xdamage \
 	--enable-x11-backend \
+	--enable-broadway-backend \
+	--enable-wayland-backend \
 %if %{with crossstrap}
 	--enable-introspection=no \
 %endif
 	--enable-colord
+
+# fight unused direct deps
+sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
 
 %make
 
@@ -278,6 +288,8 @@ fi
 %ghost %verify (not md5 mtime size) %{_libdir}/gtk-%{api_version}/%{binary_version}/immodules.cache
 %{_bindir}/gtk-query-immodules-%{api_version}-*
 %{_bindir}/gtk-launch
+%{_bindir}/broadwayd
+%{_bindir}/gtk-query-settings
 
 
 %files common -f gtk30.lang
@@ -288,9 +300,11 @@ fi
 %{_datadir}/glib-2.0/schemas/org.gtk.Settings.ColorChooser.gschema.xml
 %{_datadir}/glib-2.0/schemas/org.gtk.Settings.Debug.gschema.xml
 %{_datadir}/themes
+%{_datadir}/gettext/its/gtkbuilder.*
 %{_mandir}/man1/gtk-query-immodules-%{api_version}.1*
 %{_mandir}/man1/gtk-launch.1*
 %{_mandir}/man1/broadwayd.1*
+%{_mandir}/man1/gtk-query-settings.1*
 
 %files -n %{modules}
 %dir %{_libdir}/gtk-%{api_version}/modules
@@ -315,8 +329,7 @@ fi
 %endif
 
 %files -n %{devname}
-%doc README
-%doc docs/*.txt AUTHORS ChangeLog NEWS* README*
+%doc docs/*.txt AUTHORS NEWS README
 %{_bindir}/gtk3-demo
 %{_bindir}/gtk3-demo-application
 %{_bindir}/gtk3-icon-browser
