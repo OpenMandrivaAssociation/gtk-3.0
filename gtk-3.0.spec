@@ -218,7 +218,7 @@ export CFLAGS=`echo %{optflags} | sed -e 's/-fomit-frame-pointer//g'`
 	--enable-xdamage \
 	--enable-x11-backend \
 	--enable-broadway-backend \
-	--enable-wayland-backend
+	--enable-wayland-backend \
 %if %{with crossstrap}
 	--enable-introspection=no \
 %endif
