@@ -55,6 +55,10 @@ BuildRequires:	pkgconfig(xfixes)
 BuildRequires:	pkgconfig(xi)
 BuildRequires:	pkgconfig(xinerama)
 BuildRequires:	pkgconfig(xrandr)
+BuildRequires:	pkgconfig(xkbcommon) >= 0.2.0
+BuildRequires:	pkgconfig(wayland-client) >= 1.9.91
+BuildRequires:	pkgconfig(wayland-cursor) >= 1.9.91
+BuildRequires:	pkgconfig(wayland-egl)
 BuildRequires:	pkgconfig(xrender)
 #gw needed for gtk-update-icon-cache in gtk+3.0 3.0.9
 BuildRequires:	gtk+2.0
@@ -212,10 +216,15 @@ export CFLAGS=`echo %{optflags} | sed -e 's/-fomit-frame-pointer//g'`
 	--enable-xcomposite \
 	--enable-xdamage \
 	--enable-x11-backend \
+	--enable-broadway-backend \
+	--enable-wayland-backend
 %if %{with crossstrap}
 	--enable-introspection=no \
 %endif
 	--enable-colord
+
+# fight unused direct deps
+sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
 
 %make
 
@@ -315,8 +324,7 @@ fi
 %endif
 
 %files -n %{devname}
-%doc README
-%doc docs/*.txt AUTHORS ChangeLog NEWS* README*
+%doc docs/*.txt AUTHORS NEWS README
 %{_bindir}/gtk3-demo
 %{_bindir}/gtk3-demo-application
 %{_bindir}/gtk3-icon-browser
