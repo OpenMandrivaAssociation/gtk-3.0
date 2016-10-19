@@ -56,6 +56,7 @@ BuildRequires:	pkgconfig(xi)
 BuildRequires:	pkgconfig(xinerama)
 BuildRequires:	pkgconfig(xrandr)
 BuildRequires:	pkgconfig(xkbcommon) >= 0.2.0
+BuildRequires:	pkgconfig(wayland-protocols)
 BuildRequires:	pkgconfig(wayland-client) >= 1.9.91
 BuildRequires:	pkgconfig(wayland-cursor) >= 1.9.91
 BuildRequires:	pkgconfig(wayland-egl)
