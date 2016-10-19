@@ -288,6 +288,8 @@ fi
 %ghost %verify (not md5 mtime size) %{_libdir}/gtk-%{api_version}/%{binary_version}/immodules.cache
 %{_bindir}/gtk-query-immodules-%{api_version}-*
 %{_bindir}/gtk-launch
+%{_bindir}/broadwayd
+%{_bindir}/gtk-query-settings
 
 
 %files common -f gtk30.lang
@@ -298,9 +300,11 @@ fi
 %{_datadir}/glib-2.0/schemas/org.gtk.Settings.ColorChooser.gschema.xml
 %{_datadir}/glib-2.0/schemas/org.gtk.Settings.Debug.gschema.xml
 %{_datadir}/themes
+%{_datadir}/gettext/its/gtkbuilder.*
 %{_mandir}/man1/gtk-query-immodules-%{api_version}.1*
 %{_mandir}/man1/gtk-launch.1*
 %{_mandir}/man1/broadwayd.1*
+%{_mandir}/man1/gtk-query-settings.1*
 
 %files -n %{modules}
 %dir %{_libdir}/gtk-%{api_version}/modules
