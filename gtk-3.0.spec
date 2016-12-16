@@ -26,7 +26,7 @@
 
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
-Version:	3.22.3
+Version:	3.22.5
 Release:	1
 License:	LGPLv2+
 Group:		System/Libraries
@@ -61,6 +61,7 @@ BuildRequires:	pkgconfig(wayland-client) >= 1.9.91
 BuildRequires:	pkgconfig(wayland-cursor) >= 1.9.91
 BuildRequires:	pkgconfig(wayland-egl)
 BuildRequires:	pkgconfig(xrender)
+BuildRequires:	pkgconfig(harfbuzz)
 #gw needed for gtk-update-icon-cache in gtk+3.0 3.0.9
 BuildRequires:	gtk+2.0
 
