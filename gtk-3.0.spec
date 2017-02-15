@@ -26,7 +26,7 @@
 
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
-Version:	3.22.7
+Version:	3.22.8
 Release:	1
 License:	LGPLv2+
 Group:		System/Libraries
@@ -94,7 +94,7 @@ Suggests:	breeze-gtk
 The gtk+ package contains the GIMP ToolKit (GTK+), a library for creating
 graphical user interfaces for the X Window System.  GTK+ was originally
 written for the GIMP (GNU Image Manipulation Program) image processing
-program, but is now used by several other programs as well.  
+program, but is now used by several other programs as well.
 
 If you are planning on using the GIMP or another program that uses GTK+,
 you'll need to have the gtk+ package installed.
