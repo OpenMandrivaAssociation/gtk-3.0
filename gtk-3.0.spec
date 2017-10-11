@@ -228,7 +228,7 @@ export CFLAGS=`echo %{optflags} | sed -e 's/-fomit-frame-pointer//g'`
 # fight unused direct deps
 sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
 
-%make
+%make -j1
 
 %check
 %if %enable_tests
