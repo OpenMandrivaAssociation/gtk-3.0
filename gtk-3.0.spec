@@ -35,6 +35,7 @@ Source0:	http://ftp.gnome.org/pub/GNOME/sources/gtk+/%{url_ver}/%{pkgname}-%{ver
 Patch0:		gtk+-defaulttheme.patch
 
 BuildRequires:	cups-devel
+BuildRequires:	libxml2-utils
 BuildRequires:	gettext-devel
 BuildRequires:	pkgconfig(atk) >= 1.29.2
 BuildRequires:	pkgconfig(cairo) >= 1.6.0
@@ -228,7 +229,7 @@ export CFLAGS=`echo %{optflags} | sed -e 's/-fomit-frame-pointer//g'`
 # fight unused direct deps
 sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
 
-%make -j1
+%make
 
 %check
 %if %enable_tests
