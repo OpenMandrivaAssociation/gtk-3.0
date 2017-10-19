@@ -209,6 +209,8 @@ Gail is the GNOME Accessibility Implementation Library
 %build
 # fix crash in nautilus (GNOME bug #596977)
 export CFLAGS=`echo %{optflags} | sed -e 's/-fomit-frame-pointer//g'`
+export LN_S="ln -sf"
+export AC_PROG_LN_S="ln -sf"
 
 %configure \
 	--disable-static \
@@ -229,7 +231,7 @@ export CFLAGS=`echo %{optflags} | sed -e 's/-fomit-frame-pointer//g'`
 # fight unused direct deps
 sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
 
-%make
+%make LN_S="ln -sf"
 
 %check
 %if %enable_tests
