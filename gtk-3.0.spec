@@ -303,6 +303,7 @@ fi
 %{_datadir}/glib-2.0/schemas/org.gtk.exampleapp.gschema.xml
 %{_datadir}/glib-2.0/schemas/org.gtk.Settings.ColorChooser.gschema.xml
 %{_datadir}/glib-2.0/schemas/org.gtk.Settings.Debug.gschema.xml
+%{_datadir}/glib-2.0/schemas/org.gtk.Settings.EmojiChooser.gschema.xml
 %{_datadir}/themes
 %{_datadir}/gettext/its/gtkbuilder.*
 %{_mandir}/man1/gtk-query-immodules-%{api_version}.1*
