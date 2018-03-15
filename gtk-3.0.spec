@@ -119,7 +119,7 @@ Obsoletes:	%{_lib}gtk+3 < 3.3.4-2
 Obsoletes:	%{_lib}gtk+3.0_0 < 3.0.0
 Obsoletes:	%{_lib}gtk+-x11-3.0_0 < 3.0.0
 Obsoletes:	%{_lib}gtk-engines3 < 3.0.0
-Conflicts:	%{name} <3.18.9-4
+Conflicts:	%{name} < 3.18.9-4
 
 %description -n %{modules}
 This package contains the immodules, engines and printbackends libraries
