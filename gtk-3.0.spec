@@ -63,6 +63,8 @@ BuildRequires:	pkgconfig(wayland-cursor) >= 1.9.91
 BuildRequires:	pkgconfig(wayland-egl)
 BuildRequires:	pkgconfig(xrender)
 BuildRequires:	pkgconfig(harfbuzz)
+BuildRequires:  pkgconfig(krb5)
+BuildRequires:  pkgconfig(com_err)
 #gw needed for gtk-update-icon-cache in gtk+3.0 3.0.9
 BuildRequires:	gtk+2.0
 
