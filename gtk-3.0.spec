@@ -209,6 +209,9 @@ Gail is the GNOME Accessibility Implementation Library
 %apply_patches
 
 %build
+%ifarch %{ix86} 
+export CC=gcc 
+%endif
 # fix crash in nautilus (GNOME bug #596977)
 export CFLAGS=`echo %{optflags} | sed -e 's/-fomit-frame-pointer//g'`
 export LN_S="ln -sf"
