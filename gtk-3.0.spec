@@ -26,7 +26,7 @@
 
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
-Version:	3.22.26
+Version:	3.22.30
 Release:	1
 License:	LGPLv2+
 Group:		System/Libraries
@@ -63,6 +63,8 @@ BuildRequires:	pkgconfig(wayland-cursor) >= 1.9.91
 BuildRequires:	pkgconfig(wayland-egl)
 BuildRequires:	pkgconfig(xrender)
 BuildRequires:	pkgconfig(harfbuzz)
+BuildRequires:  pkgconfig(krb5)
+BuildRequires:  pkgconfig(com_err)
 #gw needed for gtk-update-icon-cache in gtk+3.0 3.0.9
 BuildRequires:	gtk+2.0
 
@@ -207,6 +209,9 @@ Gail is the GNOME Accessibility Implementation Library
 %apply_patches
 
 %build
+%ifarch %{ix86} 
+export CC=gcc 
+%endif
 # fix crash in nautilus (GNOME bug #596977)
 export CFLAGS=`echo %{optflags} | sed -e 's/-fomit-frame-pointer//g'`
 export LN_S="ln -sf"
