@@ -65,6 +65,7 @@ BuildRequires:	pkgconfig(xrender)
 BuildRequires:	pkgconfig(harfbuzz)
 BuildRequires:  pkgconfig(krb5)
 BuildRequires:  pkgconfig(com_err)
+BuildRequires:  glibc-static-devel
 #gw needed for gtk-update-icon-cache in gtk+3.0 3.0.9
 BuildRequires:	gtk+2.0
 
