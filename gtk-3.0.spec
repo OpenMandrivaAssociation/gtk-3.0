@@ -26,8 +26,8 @@
 
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
-Version:	3.22.30
-Release:	3
+Version:	3.24.2
+Release:	1
 License:	LGPLv2+
 Group:		System/Libraries
 Url:		http://www.gtk.org
@@ -35,6 +35,9 @@ Source0:	http://ftp.gnome.org/pub/GNOME/sources/gtk+/%{url_ver}/%{pkgname}-%{ver
 Patch0:		gtk+-defaulttheme.patch
 # Default to using KDE file dialogs etc.
 Patch1:		gtk-use-kde-file-dialogs-by-default.patch
+# Amazing. g_crap doesn't even do "it compiles, therefore it works" testing
+# on its releases.
+Patch2:		gtk-3.24.2-compile.patch
 
 BuildRequires:	cups-devel
 BuildRequires:	libxml2-utils

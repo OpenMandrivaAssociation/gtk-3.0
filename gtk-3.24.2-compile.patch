@@ -1,0 +1,12 @@
+diff -up gtk+-3.24.2/docs/tools/shooter.c.omv~ gtk+-3.24.2/docs/tools/shooter.c
+--- gtk+-3.24.2/docs/tools/shooter.c.omv~	2018-12-16 04:09:29.730618359 +0100
++++ gtk+-3.24.2/docs/tools/shooter.c	2018-12-16 04:09:34.404691936 +0100
+@@ -170,7 +170,7 @@ take_window_shot (Window         child,
+       y_orig = 0;
+     }
+ 
+-  if (x_orig + width > gdk_screen_get_width (gdk_screen_get_dfeault ()))
++  if (x_orig + width > gdk_screen_get_width (gdk_screen_get_default ()))
+     width = gdk_screen_width () - x_orig;
+ 
+   if (y_orig + height > gdk_screen_get_height (gdk_screen_get_default ()))
