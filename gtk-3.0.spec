@@ -37,7 +37,7 @@ Patch0:		gtk+-defaulttheme.patch
 Patch1:		gtk-use-kde-file-dialogs-by-default.patch
 # Amazing. g_crap doesn't even do "it compiles, therefore it works" testing
 # on its releases.
-Patch2:		gtk-3.24.2-compile.patch
+# Patch2:		gtk-3.24.2-compile.patch
 
 BuildRequires:	cups-devel
 BuildRequires:	libxml2-utils
@@ -213,8 +213,7 @@ Requires:	%{libgail} = %{version}
 Gail is the GNOME Accessibility Implementation Library
 
 %prep
-%setup -qn %{pkgname}-%{version}
-%apply_patches
+%autosetup -n %{pkgname}-%{version} -p1
 
 %build
 %ifarch %{ix86} 
@@ -244,7 +243,7 @@ export AC_PROG_LN_S="ln -sf"
 # fight unused direct deps
 sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
 
-%make LN_S="ln -sf"
+%make_build LN_S="ln -sf"
 
 %check
 %if %enable_tests
@@ -256,7 +255,7 @@ kill $(cat /tmp/.X$XDISPLAY-lock) ||:
 %endif
 
 %install
-%makeinstall_std RUN_QUERY_IMMODULES_TEST=false RUN_QUERY_LOADER_TEST=false
+%make_install RUN_QUERY_IMMODULES_TEST=false RUN_QUERY_LOADER_TEST=false
 
 touch %{buildroot}%{_libdir}/gtk-%{api_version}/%{binary_version}/immodules.cache
 mkdir -p %{buildroot}%{_libdir}/gtk-%{api_version}/modules
