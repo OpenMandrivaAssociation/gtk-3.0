@@ -27,7 +27,7 @@
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
 Version:	3.24.3
-Release:	1
+Release:	2
 License:	LGPLv2+
 Group:		System/Libraries
 Url:		http://www.gtk.org
@@ -70,7 +70,10 @@ BuildRequires:	pkgconfig(xrender)
 BuildRequires:	pkgconfig(harfbuzz)
 BuildRequires:  pkgconfig(krb5)
 BuildRequires:  pkgconfig(com_err)
+BuildRequires:  pkgconfig(json-glib-1.0)
+BuildRequires:  pkgconfig(rest-0.7)
 BuildRequires:  glibc-static-devel
+BuildRequires:  sassc
 #gw needed for gtk-update-icon-cache in gtk+3.0 3.0.9
 BuildRequires:	gtk+2.0
 
