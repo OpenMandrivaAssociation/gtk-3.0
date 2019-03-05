@@ -26,7 +26,7 @@
 
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
-Version:	3.24.4
+Version:	3.24.5
 Release:	1
 License:	LGPLv2+
 Group:		System/Libraries
@@ -219,8 +219,8 @@ Gail is the GNOME Accessibility Implementation Library
 %autosetup -n %{pkgname}-%{version} -p1
 
 %build
-%ifarch %{ix86} 
-export CC=gcc 
+%ifarch %{ix86}
+export CC=gcc
 %endif
 # fix crash in nautilus (GNOME bug #596977)
 export CFLAGS=`echo %{optflags} | sed -e 's/-fomit-frame-pointer//g'`
