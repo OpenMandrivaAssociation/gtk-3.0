@@ -23,11 +23,12 @@
 %define devgail	%mklibname -d gail %{api_version}
 %bcond_with	crossstrap
 
+%global optflags %{optflags} -O3
 
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
 Version:	3.24.8
-Release:	1
+Release:	2
 License:	LGPLv2+
 Group:		System/Libraries
 Url:		http://www.gtk.org
@@ -38,7 +39,8 @@ Patch1:		gtk-use-kde-file-dialogs-by-default.patch
 # Amazing. g_crap doesn't even do "it compiles, therefore it works" testing
 # on its releases.
 # Patch2:		gtk-3.24.2-compile.patch
-
+#(tpg) ClearLinux patch
+Patch3:		madvise.patch
 BuildRequires:	cups-devel
 BuildRequires:	libxml2-utils
 BuildRequires:	gettext-devel
@@ -223,7 +225,7 @@ Gail is the GNOME Accessibility Implementation Library
 export CC=gcc
 %endif
 # fix crash in nautilus (GNOME bug #596977)
-export CFLAGS=`echo %{optflags} | sed -e 's/-fomit-frame-pointer//g'`
+export CFLAGS=$(echo %{optflags} | sed -e 's/-fomit-frame-pointer//g')
 export LN_S="ln -sf"
 export AC_PROG_LN_S="ln -sf"
 
