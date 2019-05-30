@@ -1,0 +1,18 @@
+--- gtk+-3.22.0/gtk/gtkcssselector.c~	2016-08-25 23:50:09.000000000 +0000
++++ gtk+-3.22.0/gtk/gtkcssselector.c	2017-04-29 15:34:01.460350925 +0000
+@@ -21,6 +21,7 @@
+ 
+ #include <stdlib.h>
+ #include <string.h>
++#include <sys/mman.h>
+ 
+ #include "gtkcssprovider.h"
+ #include "gtkstylecontextprivate.h"
+@@ -1910,6 +1911,7 @@
+ 
+   /* shrink to final size */
+   data = g_realloc (data, len);
++  madvise((void*) ( (unsigned long)data & (~4095)), len, MADV_MERGEABLE);
+ 
+   tree = (GtkCssSelectorTree *)data;
+ 
