@@ -22,6 +22,7 @@
 %define libgail	%mklibname gail %{api} %{gailmaj}
 %define devgail	%mklibname -d gail %{api_version}
 %bcond_with	crossstrap
+%bcond_without	colord
 
 %global optflags %{optflags} -O3
 
@@ -46,7 +47,9 @@ BuildRequires:	libxml2-utils
 BuildRequires:	gettext-devel
 BuildRequires:	pkgconfig(atk) >= 1.29.2
 BuildRequires:	pkgconfig(cairo) >= 1.6.0
+%if %{with colord}
 BuildRequires:	pkgconfig(colord)
+%endif
 BuildRequires:	pkgconfig(epoxy)
 BuildRequires:	pkgconfig(gdk-pixbuf-2.0) >= 2.26
 BuildRequires:	pkgconfig(glib-2.0) >= 2.25.10
@@ -243,7 +246,9 @@ export AC_PROG_LN_S="ln -sf"
 %if %{with crossstrap}
 	--enable-introspection=no \
 %endif
+%if %{with colord}
 	--enable-colord
+%endif
 
 # fight unused direct deps
 sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
