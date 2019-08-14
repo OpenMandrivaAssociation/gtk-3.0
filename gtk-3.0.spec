@@ -154,7 +154,9 @@ Summary:	Shared libraries of The GIMP ToolKit (GTK+)
 Group:		System/Libraries
 Obsoletes:	%{_lib}gtk+3_0 < 3.8.1-6
 # For native file dialogs
+%ifnarch %{riscv}
 Requires:	xdg-desktop-portal-implementation
+%endif
 
 %description -n %{libgtk}
 This package contains a shared library for %{name}.
