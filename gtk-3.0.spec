@@ -1,6 +1,11 @@
+# gtk-3.0 is used by wine
+%ifarch %{x86_64}
+%bcond_without compat32
+%endif
+
 %define url_ver %(echo %{version}|cut -d. -f1,2)
 
-%define enable_gtkdoc 0
+%define enable_gtkdoc 1
 %define enable_bootstrap 0
 %define enable_tests 0
 
@@ -24,12 +29,18 @@
 %bcond_with	crossstrap
 %bcond_without	colord
 
+%define lib32gdk	%mklib32name gdk %{api} %{major}
+%define lib32gtk	%mklib32name gtk %{api} %{major}
+%define dev32name	%mklib32name -d %{pkgname} %{api_version}
+%define lib32gail	%mklib32name gail %{api} %{gailmaj}
+%define dev32gail	%mklib32name -d gail %{api_version}
+
 %global optflags %{optflags} -O3
 
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
 Version:	3.24.20
-Release:	1
+Release:	2
 License:	LGPLv2+
 Group:		System/Libraries
 Url:		http://www.gtk.org
@@ -106,6 +117,50 @@ Requires:	pango-modules
 Obsoletes:	gtk-engines3 < 3.0.0
 Provides:	%{pkgname}%{api} = %{version}-%{release}
 Suggests:	breeze-gtk
+
+%if %{with compat32}
+BuildRequires:	devel(libfontconfig)
+BuildRequires:	devel(libfreetype)
+BuildRequires:	devel(libz)
+BuildRequires:	devel(libbz2)
+BuildRequires:	devel(liblzma)
+BuildRequires:	devel(libglib-2.0)
+BuildRequires:	devel(libgio-2.0)
+BuildRequires:	devel(libmount)
+BuildRequires:	devel(libblkid)
+BuildRequires:	devel(libpango-1.0)
+BuildRequires:	devel(libatk-1.0)
+BuildRequires:	devel(libatk-bridge-2.0)
+BuildRequires:	devel(libuuid)
+BuildRequires:	devel(libcairo)
+%if %{with colord}
+BuildRequires:	pkgconfig(colord)
+%endif
+BuildRequires:	devel(libepoxy)
+BuildRequires:	devel(libgdk_pixbuf-2.0)
+BuildRequires:	devel(libpangocairo-1.0)
+BuildRequires:	pkgconfig(atk-bridge-2.0)
+BuildRequires:	devel(libX11)
+BuildRequires:	devel(libXcomposite)
+BuildRequires:	devel(libXcursor)
+BuildRequires:	devel(libXdamage)
+BuildRequires:	devel(libXext)
+BuildRequires:	devel(libXfixes)
+BuildRequires:	devel(libXi)
+BuildRequires:	devel(libXinerama)
+BuildRequires:	devel(libXrandr)
+BuildRequires:	devel(libxkbcommon)
+BuildRequires:	devel(libwayland-client)
+BuildRequires:	devel(libwayland-cursor)
+BuildRequires:	devel(libwayland-egl)
+BuildRequires:	devel(libXrender)
+BuildRequires:	devel(libharfbuzz)
+BuildRequires:  devel(libkrb5)
+BuildRequires:  devel(libcom_err)
+BuildRequires:  pkgconfig(json-glib-1.0)
+BuildRequires:  pkgconfig(rest-0.7)
+BuildRequires:  glibc-static-devel
+%endif
 
 %description
 The gtk+ package contains the GIMP ToolKit (GTK+), a library for creating
@@ -222,6 +277,52 @@ Requires:	%{libgail} = %{version}
 %description -n %{devgail}
 Gail is the GNOME Accessibility Implementation Library
 
+%if %{with compat32}
+%package -n %{lib32gdk}
+Summary:	Shared libraries of The GIMP ToolKit (GTK+) (32-bit)
+Group:		System/Libraries
+
+%description -n %{lib32gdk}
+This package contains a shared library for %{name}.
+
+%package -n %{lib32gtk}
+Summary:	Shared libraries of The GIMP ToolKit (GTK+) (32-bit)
+Group:		System/Libraries
+# For native file dialogs
+%ifnarch %{riscv}
+Requires:	xdg-desktop-portal-implementation
+%endif
+
+%description -n %{lib32gtk}
+This package contains a shared library for %{name}.
+
+%package -n %{dev32name}
+Summary:	Development files for GTK+ (GIMP ToolKit) applications (32-bit)
+Group:		Development/GNOME and GTK+
+Requires:	%{lib32gdk} = %{version}-%{release}
+Requires:	%{lib32gtk} = %{version}-%{release}
+Requires:	%{devname} = %{version}-%{release}
+
+%description -n %{dev32name}
+This package contains the development files for %{name}.
+
+%package -n %{lib32gail}
+Summary:	GNOME Accessibility Implementation Library (32-bit)
+Group:		System/Libraries
+
+%description -n %{lib32gail}
+Gail is the GNOME Accessibility Implementation Library
+
+%package -n %{dev32gail}
+Summary:	Development libraries, include files for GAIL (32-bit)
+Group:		Development/GNOME and GTK+
+Requires:	%{devgail} = %{version}
+Requires:	%{lib32gail} = %{version}
+
+%description -n %{dev32gail}
+Gail is the GNOME Accessibility Implementation Library
+%endif
+
 %prep
 %autosetup -n %{pkgname}-%{version} -p1
 
@@ -234,6 +335,26 @@ export CFLAGS=$(echo %{optflags} | sed -e 's/-fomit-frame-pointer//g')
 export LN_S="ln -sf"
 export AC_PROG_LN_S="ln -sf"
 
+export CONFIGURE_TOP="$(pwd)"
+
+%if %{with compat32}
+mkdir build32
+cd build32
+%configure32 \
+	--enable-xkb \
+	--enable-xinerama \
+	--enable-xrandr \
+	--enable-xfixes \
+	--enable-xcomposite \
+	--enable-xdamage \
+	--enable-x11-backend \
+	--disable-introspection
+%make_build LN_S="ln -sf"
+cd ..
+%endif
+
+mkdir buildnative
+cd buildnative
 %configure \
 	--disable-static \
 	--enable-xkb \
@@ -268,7 +389,10 @@ kill $(cat /tmp/.X$XDISPLAY-lock) ||:
 %endif
 
 %install
-%make_install RUN_QUERY_IMMODULES_TEST=false RUN_QUERY_LOADER_TEST=false
+%if %{with compat32}
+%make_install -C build32 RUN_QUERY_IMMODULES_TEST=false RUN_QUERY_LOADER_TEST=false
+%endif
+%make_install -C buildnative RUN_QUERY_IMMODULES_TEST=false RUN_QUERY_LOADER_TEST=false
 
 touch %{buildroot}%{_libdir}/gtk-%{api_version}/%{binary_version}/immodules.cache
 mkdir -p %{buildroot}%{_libdir}/gtk-%{api_version}/modules
@@ -388,8 +512,8 @@ fi
 %{_iconsdir}/*/*/*/gtk3-demo*
 %{_iconsdir}/*/*/*/gtk3-widget-factory*
 %_datadir/glib-2.0/schemas/org.gtk.Demo.gschema.xml
-%doc %{_datadir}/gtk-doc/html/gdk3
-%doc %{_datadir}/gtk-doc/html/gtk3
+%optional %doc %{_datadir}/gtk-doc/html/gdk3
+%optional %doc %{_datadir}/gtk-doc/html/gtk3
 %{_mandir}/man1/gtk3-demo*.1*
 # in 3.20.2
 #%{_mandir}/man1/gtk-query-settings.1.xz
@@ -405,4 +529,26 @@ fi
 %{_includedir}/gail-%{api_version}
 %{_libdir}/libgailutil-%{api}.so
 %{_libdir}/pkgconfig/gail-%{api_version}.pc
-%{_datadir}/gtk-doc/html/gail-libgail-util3
+%optional %doc %{_datadir}/gtk-doc/html/gail-libgail-util3
+
+%if %{with compat32}
+%files -n %{dev32name}
+%{_prefix}/lib/libgtk-%{api}.so
+%{_prefix}/lib/libgdk-%{api}.so
+%{_prefix}/lib/pkgconfig/gdk-*%{api_version}.pc
+%{_prefix}/lib/pkgconfig/gtk+-*%{api_version}.pc
+
+%files -n %{lib32gdk}
+%{_prefix}/lib/libgdk-%{api}.so.%{major}*
+
+%files -n %{lib32gtk}
+%{_prefix}/lib/libgtk-%{api}.so.%{major}*
+%{_prefix}/lib/gtk-%{api_version}
+
+%files -n %{lib32gail}
+%{_prefix}/lib/libgailutil-%{api}.so.%{gailmaj}*
+
+%files -n %{dev32gail}
+%{_prefix}/lib/libgailutil-%{api}.so
+%{_prefix}/lib/pkgconfig/gail-%{api_version}.pc
+%endif
