@@ -423,8 +423,8 @@ mkdir -p %{buildroot}%{_libdir}/gtk-%{api_version}/modules
 %find_lang gtk30 gtk30-properties gtk30.lang
 
 #remove not packaged files
-rm -f %{buildroot}%{_mandir}/man1/gtk-update-icon-cache.1*
-rm -f %{buildroot}%{_bindir}/gtk-update-icon-cache
+#rm -f %{buildroot}%{_mandir}/man1/gtk-update-icon-cache.1*
+#rm -f %{buildroot}%{_bindir}/gtk-update-icon-cache
 
 %post -n %{modules}
 if [ "$1" = "2" ]; then
