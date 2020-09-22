@@ -103,6 +103,7 @@ BuildRequires:	gtk-doc >= 0.9
 BuildRequires:	sgml-tools
 BuildRequires:	texlive-texinfo
 %endif
+Requires:	gtk-update-icon-cache
 %if !%{enable_bootstrap}
 Suggests:	xdg-user-dirs-gtk
 %endif
@@ -276,6 +277,17 @@ Provides:	%{name}-devel = %{version}-%{release}
 
 %description -n %{devname}
 This package contains the development files for %{name}.
+
+%package -n gtk-update-icon-cache
+Summary:	Icon theme caching utility
+Group:		System/Libraries
+
+%description -n gtk-update-icon-cache
+GTK+ can use the cache files created by gtk-update-icon-cache to avoid a lot of
+system call and disk seek overhead when the application starts. Since the
+format of the cache files allows them to be mmap()ed shared between multiple
+applications, the overall memory consumption is reduced as well.
+
 
 %package -n %{libgail}
 Summary:	GNOME Accessibility Implementation Library
@@ -538,6 +550,11 @@ fi
 %{_mandir}/man1/gtk3-widget-factory.1*
 %{_mandir}/man1/gtk-encode-symbolic-svg.1*
 %{_mandir}/man1/gtk-builder-tool.1*
+
+%files -n gtk-update-icon-cache
+%{_bindir}/gtk-update-icon-cache
+%{_mandir}/man1/gtk-update-icon-cache.1*
+
 
 %files -n %{libgail}
 %{_libdir}/libgailutil-%{api}.so.%{gailmaj}*
