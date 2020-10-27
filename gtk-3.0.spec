@@ -40,7 +40,7 @@
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
 Version:	3.24.23
-Release:	1
+Release:	2
 License:	LGPLv2+
 Group:		System/Libraries
 Url:		http://www.gtk.org
@@ -103,6 +103,7 @@ BuildRequires:	gtk-doc >= 0.9
 BuildRequires:	sgml-tools
 BuildRequires:	texlive-texinfo
 %endif
+Requires:	gtk-update-icon-cache
 %if !%{enable_bootstrap}
 Suggests:	xdg-user-dirs-gtk
 %endif
@@ -277,6 +278,17 @@ Provides:	%{name}-devel = %{version}-%{release}
 %description -n %{devname}
 This package contains the development files for %{name}.
 
+%package -n gtk-update-icon-cache
+Summary:	Icon theme caching utility
+Group:		System/Libraries
+
+%description -n gtk-update-icon-cache
+GTK+ can use the cache files created by gtk-update-icon-cache to avoid a lot of
+system call and disk seek overhead when the application starts. Since the
+format of the cache files allows them to be mmap()ed shared between multiple
+applications, the overall memory consumption is reduced as well.
+
+
 %package -n %{libgail}
 Summary:	GNOME Accessibility Implementation Library
 Group:		System/Libraries
@@ -423,8 +435,8 @@ mkdir -p %{buildroot}%{_libdir}/gtk-%{api_version}/modules
 %find_lang gtk30 gtk30-properties gtk30.lang
 
 #remove not packaged files
-rm -f %{buildroot}%{_mandir}/man1/gtk-update-icon-cache.1*
-rm -f %{buildroot}%{_bindir}/gtk-update-icon-cache
+#rm -f %{buildroot}%{_mandir}/man1/gtk-update-icon-cache.1*
+#rm -f %{buildroot}%{_bindir}/gtk-update-icon-cache
 
 %post -n %{modules}
 if [ "$1" = "2" ]; then
@@ -538,6 +550,11 @@ fi
 %{_mandir}/man1/gtk3-widget-factory.1*
 %{_mandir}/man1/gtk-encode-symbolic-svg.1*
 %{_mandir}/man1/gtk-builder-tool.1*
+
+%files -n gtk-update-icon-cache
+%{_bindir}/gtk-update-icon-cache
+%{_mandir}/man1/gtk-update-icon-cache.1*
+
 
 %files -n %{libgail}
 %{_libdir}/libgailutil-%{api}.so.%{gailmaj}*
