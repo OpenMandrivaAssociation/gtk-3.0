@@ -87,6 +87,7 @@ BuildRequires:  pkgconfig(krb5)
 BuildRequires:  pkgconfig(com_err)
 BuildRequires:  pkgconfig(json-glib-1.0)
 BuildRequires:  pkgconfig(rest-0.7)
+BuildRequires:	pkgconfig(libtiff-4)
 BuildRequires:  glibc-static-devel
 BuildRequires:  sassc
 #gw needed for gtk-update-icon-cache in gtk+3.0 3.0.9
