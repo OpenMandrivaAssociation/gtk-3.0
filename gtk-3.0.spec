@@ -48,8 +48,6 @@ Source0:	http://ftp.gnome.org/pub/GNOME/sources/gtk+/%{url_ver}/%{pkgname}-%{ver
 Patch0:		gtk+-defaulttheme.patch
 # Default to using KDE file dialogs etc.
 Patch1:		gtk-use-kde-file-dialogs-by-default.patch
-# Make cut&paste work between gcrap and qt even on wayland
-Patch2:		https://gitlab.gnome.org/GNOME/gtk/-/commit/9a693c7228a88b76a007aed41b101d89d084cf9b.patch
 #(tpg) ClearLinux patch
 Patch3:		madvise.patch
 BuildRequires:	cups-devel
