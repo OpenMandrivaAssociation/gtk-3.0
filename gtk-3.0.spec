@@ -86,6 +86,8 @@ BuildRequires:  pkgconfig(com_err)
 BuildRequires:  pkgconfig(json-glib-1.0)
 BuildRequires:  pkgconfig(rest-0.7)
 BuildRequires:	pkgconfig(libtiff-4)
+BuildRequires:	pkgconfig(libjpeg)
+BuildRequires:	pkgconfig(lzo2)
 BuildRequires:  glibc-static-devel
 BuildRequires:  sassc
 #gw needed for gtk-update-icon-cache in gtk+3.0 3.0.9
@@ -135,6 +137,8 @@ BuildRequires:	devel(libcairo)
 %if %{with colord}
 BuildRequires:	pkgconfig(colord)
 %endif
+BuildRequires:	devel(libjpeg)
+BuildRequires:	devel(liblzo2)
 BuildRequires:	devel(libepoxy)
 BuildRequires:	devel(libgdk_pixbuf-2.0)
 BuildRequires:	devel(libpangocairo-1.0)
