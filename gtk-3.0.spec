@@ -40,7 +40,7 @@
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
 Version:	3.24.34
-Release:	1
+Release:	2
 License:	LGPLv2+
 Group:		System/Libraries
 Url:		http://www.gtk.org
@@ -48,6 +48,7 @@ Source0:	http://ftp.gnome.org/pub/GNOME/sources/gtk+/%{url_ver}/%{pkgname}-%{ver
 Patch0:		gtk+-defaulttheme.patch
 # Default to using KDE file dialogs etc.
 Patch1:		gtk-use-kde-file-dialogs-by-default.patch
+Patch2:		gtk-3.24.34-default-to-sane-font-rendering.patch
 #(tpg) ClearLinux patch
 Patch3:		madvise.patch
 BuildRequires:	cups-devel
@@ -357,16 +358,8 @@ Gail is the GNOME Accessibility Implementation Library
 
 %prep
 %autosetup -n %{pkgname}-%{version} -p1
-
-%build
-#ifarch %{ix86}
-#export CC=gcc
-#endif
 # fix crash in nautilus (GNOME bug #596977)
 export CFLAGS=$(echo %{optflags} | sed -e 's/-fomit-frame-pointer//g')
-export LN_S="ln -sf"
-export AC_PROG_LN_S="ln -sf"
-
 export CONFIGURE_TOP="$(pwd)"
 
 %if %{with compat32}
@@ -381,7 +374,6 @@ cd build32
 	--enable-xdamage \
 	--enable-x11-backend \
 	--disable-introspection
-%make_build LN_S="ln -sf"
 cd ..
 %endif
 
@@ -409,7 +401,11 @@ cd buildnative
 # fight unused direct deps
 sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
 
-%make_build LN_S="ln -sf"
+%build
+%if %{with compat32}
+%make_build -C build32
+%endif
+%make_build -C buildnative
 
 %check
 %if %enable_tests

@@ -1,0 +1,36 @@
+diff -up gtk+-3.24.34/gdk/wayland/gdkscreen-wayland.c.omv~ gtk+-3.24.34/gdk/wayland/gdkscreen-wayland.c
+--- gtk+-3.24.34/gdk/wayland/gdkscreen-wayland.c.omv~	2022-08-29 21:19:59.101934491 +0200
++++ gtk+-3.24.34/gdk/wayland/gdkscreen-wayland.c	2022-08-29 21:25:22.390126172 +0200
+@@ -254,7 +254,7 @@ get_antialiasing (const char *s)
+     if (strcmp (s, names[i]) == 0)
+       return i;
+ 
+-  return 0;
++  return 2; // OM: Let's default to sanity
+ }
+ 
+ typedef enum
+@@ -275,7 +275,7 @@ get_hinting (const char *s)
+     if (strcmp (s, names[i]) == 0)
+       return i;
+ 
+-  return 0;
++  return 3; // OM: Let's default to sanity
+ }
+ 
+ typedef enum
+diff -up gtk+-3.24.34/gtk/gtksettings.c.omv~ gtk+-3.24.34/gtk/gtksettings.c
+--- gtk+-3.24.34/gtk/gtksettings.c.omv~	2022-08-29 22:32:05.525861569 +0200
++++ gtk+-3.24.34/gtk/gtksettings.c	2022-08-29 22:32:26.372616802 +0200
+@@ -3098,6 +3098,11 @@ settings_update_font_options (GtkSetting
+                 "gtk-xft-rgba", &rgba_str,
+                 NULL);
+ 
++  if(hint_style_str == NULL && !antialias && !hinting) { // OM: Let's default to something reasonable...
++    antialias = 1;
++    hinting = CAIRO_HINT_STYLE_FULL;
++  }
++
+   options = cairo_font_options_create ();
+ 
+   cairo_font_options_set_hint_metrics (options, CAIRO_HINT_METRICS_ON);
