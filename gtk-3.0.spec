@@ -39,7 +39,7 @@
 
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
-Version:	3.24.35
+Version:	3.24.36
 Release:	1
 License:	LGPLv2+
 Group:		System/Libraries
@@ -93,6 +93,7 @@ BuildRequires:  glibc-static-devel
 BuildRequires:  sassc
 #gw needed for gtk-update-icon-cache in gtk+3.0 3.0.9
 BuildRequires:	gtk+2.0
+BuildRequires:	meson
 
 %if %{enable_tests}
 BuildRequires:	x11-server-xvfb
@@ -363,39 +364,27 @@ export CFLAGS=$(echo %{optflags} | sed -e 's/-fomit-frame-pointer//g')
 export CONFIGURE_TOP="$(pwd)"
 
 %if %{with compat32}
-mkdir build32
-cd build32
-%configure32 \
-	--enable-xkb \
-	--enable-xinerama \
-	--enable-xrandr \
-	--enable-xfixes \
-	--enable-xcomposite \
-	--enable-xdamage \
-	--enable-x11-backend \
-	--disable-introspection
-cd ..
+%meson32 \
+	 -Dx11_backend=true \
+	 -Dwayland_backend=true \
+	 -broadway_backend=true \
+	 -Dxinerama=yes
 %endif
 
-mkdir buildnative
-cd buildnative
-%configure \
-	--disable-static \
-	--enable-xkb \
-	--enable-xinerama \
-	--enable-xrandr \
-	--enable-xfixes \
-	--enable-xcomposite \
-	--enable-xdamage \
-	--enable-x11-backend \
-	--enable-broadway-backend \
-	--enable-wayland-backend \
-	--with-included-immodules=wayland \
+%meson \
+	-Dx11_backend=true \
+	-Dwayland_backend=true \
+	-Dbroadway_backend=true \
+	-Dxinerama=yes \
+	-Dtracker3=true \
+	-Dbuiltin_immodules=all \
 %if %{with crossstrap}
-	--enable-introspection=no \
+	-Dintrospection=false \
+%else
+	-Dintrospection==true \
 %endif
 %if %{with colord}
-	--enable-colord
+	-Dcolord=yes
 %endif
 
 # fight unused direct deps
@@ -403,24 +392,16 @@ sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
 
 %build
 %if %{with compat32}
-%make_build -C build32
+%ninja_build -C build32
 %endif
-%make_build -C buildnative
+%meson_build
 
-%check
-%if %enable_tests
-XDISPLAY=$(i=1; while [ -f /tmp/.X$i-lock ]; do i=$(($i+1)); done; echo $i)
-%{_bindir}/Xvfb :$XDISPLAY &
-export DISPLAY=:$XDISPLAY
-make check
-kill $(cat /tmp/.X$XDISPLAY-lock) ||:
-%endif
 
 %install
 %if %{with compat32}
-%make_install -C build32 RUN_QUERY_IMMODULES_TEST=false RUN_QUERY_LOADER_TEST=false
+%ninja_install -C build32
 %endif
-%make_install -C buildnative RUN_QUERY_IMMODULES_TEST=false RUN_QUERY_LOADER_TEST=false
+%meson_install
 
 touch %{buildroot}%{_libdir}/gtk-%{api_version}/%{binary_version}/immodules.cache
 mkdir -p %{buildroot}%{_libdir}/gtk-%{api_version}/modules
