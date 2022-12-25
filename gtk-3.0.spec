@@ -368,6 +368,7 @@ export CONFIGURE_TOP="$(pwd)"
 	 -Dx11_backend=true \
 	 -Dwayland_backend=true \
 	 -Dbroadway_backend=true \
+         -Dintrospection=false \
 	 -Dxinerama=yes
 %endif
 
