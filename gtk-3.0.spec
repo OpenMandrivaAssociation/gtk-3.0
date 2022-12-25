@@ -367,7 +367,7 @@ export CONFIGURE_TOP="$(pwd)"
 %meson32 \
 	 -Dx11_backend=true \
 	 -Dwayland_backend=true \
-	 -broadway_backend=true \
+	 -Dbroadway_backend=true \
 	 -Dxinerama=yes
 %endif
 
