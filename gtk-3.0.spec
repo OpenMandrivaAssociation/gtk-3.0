@@ -66,6 +66,8 @@ BuildRequires:	pkgconfig(gobject-introspection-1.0) >= 0.9.5
 BuildRequires:	pkgconfig(pango) >= 1.30
 BuildRequires:	pkgconfig(pangocairo) >= 1.30
 BuildRequires:	pkgconfig(atk-bridge-2.0) >= 2.6.0
+BuildRequires:	pkgconfig(tracker-sparql-3.0)
+BuildRequires:	pkgconfig(iso-codes)
 BuildRequires:	pkgconfig(x11)
 BuildRequires:	pkgconfig(xcomposite)
 BuildRequires:	pkgconfig(xcursor)
