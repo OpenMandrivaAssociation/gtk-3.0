@@ -382,7 +382,7 @@ export CONFIGURE_TOP="$(pwd)"
 %if %{with crossstrap}
 	-Dintrospection=false \
 %else
-	-Dintrospection==true \
+	-Dintrospection=true \
 %endif
 %if %{with colord}
 	-Dcolord=yes
