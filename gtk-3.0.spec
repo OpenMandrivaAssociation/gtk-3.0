@@ -47,10 +47,11 @@ Url:		http://www.gtk.org
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/gtk+/%{url_ver}/%{pkgname}-%{version}.tar.xz
 Patch0:		gtk+-defaulttheme.patch
 # Default to using KDE file dialogs etc.
-#Patch1:		gtk-use-kde-file-dialogs-by-default.patch
+Patch1:		gtk-use-kde-file-dialogs-by-default.patch
 Patch2:		gtk-3.24.34-default-to-sane-font-rendering.patch
 #(tpg) ClearLinux patch
 Patch3:		madvise.patch
+Patch4:		grap-fix-build-without-introspection.patch
 BuildRequires:	cups-devel
 BuildRequires:	libxml2-utils
 BuildRequires:	gettext-devel
@@ -363,7 +364,6 @@ Gail is the GNOME Accessibility Implementation Library
 %autosetup -n %{pkgname}-%{version} -p1
 # fix crash in nautilus (GNOME bug #596977)
 export CFLAGS=$(echo %{optflags} | sed -e 's/-fomit-frame-pointer//g')
-export CONFIGURE_TOP="$(pwd)"
 
 %if %{with compat32}
 %meson32 \
@@ -378,9 +378,10 @@ export CONFIGURE_TOP="$(pwd)"
 	-Dx11_backend=true \
 	-Dwayland_backend=true \
 	-Dbroadway_backend=true \
+	-Dman=true \
 	-Dxinerama=yes \
 	-Dtracker3=true \
-	-Dbuiltin_immodules=all \
+	-Dbuiltin_immodules=backend \
 %if %{with crossstrap}
 	-Dintrospection=false \
 %else
@@ -495,7 +496,7 @@ fi
 %endif
 
 %files -n %{devname}
-%doc docs/*.txt AUTHORS NEWS README
+%doc docs/*.txt NEWS
 %{_bindir}/gtk3-demo
 %{_bindir}/gtk3-demo-application
 %{_bindir}/gtk3-icon-browser

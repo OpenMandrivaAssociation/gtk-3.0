@@ -42,27 +42,3 @@ diff -up gtk+-3.24.2/gtk/gtkprivate.c.0001~ gtk+-3.24.2/gtk/gtkprivate.c
      }
  
    return use_portal[0] == '1';
-diff -up gtk+-3.24.2/testsuite/gtk/gtkprivate.c.0001~ gtk+-3.24.2/testsuite/gtk/gtkprivate.c
---- gtk+-3.24.2/testsuite/gtk/gtkprivate.c.0001~	2018-12-16 03:42:40.397548712 +0100
-+++ gtk+-3.24.2/testsuite/gtk/gtkprivate.c	2018-12-16 03:45:27.878509861 +0100
-@@ -275,18 +275,9 @@ gtk_should_use_portal (void)
- 
-   if (G_UNLIKELY (use_portal == NULL))
-     {
--      char *path;
--
--      path = g_build_filename (g_get_user_runtime_dir (), "flatpak-info", NULL);
--      if (g_file_test (path, G_FILE_TEST_EXISTS))
-+      use_portal = g_getenv ("GTK_USE_PORTAL");
-+      if (!use_portal)
-         use_portal = "1";
--      else
--        {
--          use_portal = g_getenv ("GTK_USE_PORTAL");
--          if (!use_portal)
--            use_portal = "";
--        }
--      g_free (path);
-     }
- 
-   return use_portal[0] == '1';
