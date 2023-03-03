@@ -51,7 +51,7 @@ Patch1:		gtk-use-kde-file-dialogs-by-default.patch
 Patch2:		gtk-3.24.34-default-to-sane-font-rendering.patch
 #(tpg) ClearLinux patch
 Patch3:		madvise.patch
-Patch4:		grap-fix-build-without-introspection.patch
+#Patch4:		grap-fix-build-without-introspection.patch
 BuildRequires:	cups-devel
 BuildRequires:	libxml2-utils
 BuildRequires:	gettext-devel
