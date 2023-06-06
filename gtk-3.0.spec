@@ -39,8 +39,8 @@
 
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
-Version:	3.24.37
-Release:	2
+Version:	3.24.38
+Release:	1
 License:	LGPLv2+
 Group:		System/Libraries
 Url:		http://www.gtk.org
@@ -79,6 +79,7 @@ BuildRequires:	pkgconfig(xi)
 BuildRequires:	pkgconfig(xinerama)
 BuildRequires:	pkgconfig(xrandr)
 BuildRequires:	pkgconfig(xkbcommon) >= 0.2.0
+BuildRequires:	pkgconfig(xtst)
 BuildRequires:	pkgconfig(wayland-protocols)
 BuildRequires:	pkgconfig(wayland-client) >= 1.9.91
 BuildRequires:	pkgconfig(wayland-cursor) >= 1.9.91
@@ -154,6 +155,7 @@ BuildRequires:	devel(libXcomposite)
 BuildRequires:	devel(libXcursor)
 BuildRequires:	devel(libXdamage)
 BuildRequires:	devel(libXext)
+BuildRequires:	devel(libXtst)
 BuildRequires:	devel(libXfixes)
 BuildRequires:	devel(libXi)
 BuildRequires:	devel(libXinerama)
