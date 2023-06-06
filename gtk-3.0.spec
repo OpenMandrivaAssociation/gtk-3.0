@@ -126,6 +126,7 @@ Provides:	%{pkgname}%{api} = %{version}-%{release}
 Recommends:	breeze-gtk
 
 %if %{with compat32}
+BuildRequires:	gdk-pixbuf2.0
 BuildRequires:	devel(libfontconfig)
 BuildRequires:	devel(libfreetype)
 BuildRequires:	devel(libz)
