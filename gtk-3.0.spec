@@ -40,7 +40,7 @@
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
 Version:	3.24.38
-Release:	1
+Release:	2
 License:	LGPLv2+
 Group:		System/Libraries
 Url:		http://www.gtk.org
@@ -123,7 +123,7 @@ Requires:	pango-modules
 
 Obsoletes:	gtk-engines3 < 3.0.0
 Provides:	%{pkgname}%{api} = %{version}-%{release}
-Recommends:	breeze-gtk
+Recommends:	(breeze-gtk or plasma6-breeze-gtk)
 
 %if %{with compat32}
 BuildRequires:	gdk-pixbuf2.0
