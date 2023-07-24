@@ -126,7 +126,7 @@ Provides:	%{pkgname}%{api} = %{version}-%{release}
 Recommends:	(breeze-gtk or plasma6-breeze-gtk)
 
 %if %{with compat32}
-BuildRequires:	gdk-pixbuf2.0
+BuildRequires:	devel(libgdk_pixbuf-2.0)
 BuildRequires:	devel(libfontconfig)
 BuildRequires:	devel(libfreetype)
 BuildRequires:	devel(libz)
