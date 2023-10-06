@@ -40,7 +40,7 @@
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
 Version:	3.24.38
-Release:	3
+Release:	4
 License:	LGPLv2+
 Group:		System/Libraries
 Url:		http://www.gtk.org
@@ -285,6 +285,8 @@ Requires:	%{girgdk} = %{version}-%{release}
 Requires:	%{girgdkx11} = %{version}-%{release}
 Requires:	%{girname} = %{version}-%{release}
 %endif
+# Not needed but used as sanity workaround after harfuzz gir splitting.
+Requires:       %{_lib}harfbuzz-gir-devel
 Provides:	%{pkgname}%{api}-devel = %{version}-%{release}
 Provides:	%{name}-devel = %{version}-%{release}
 
