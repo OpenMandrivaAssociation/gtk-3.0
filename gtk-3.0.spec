@@ -94,6 +94,7 @@ BuildRequires:	pkgconfig(libtiff-4)
 BuildRequires:	pkgconfig(libjpeg)
 BuildRequires:	pkgconfig(lzo2)
 BuildRequires:  glibc-static-devel
+BuildRequires:  %{_lib}harfbuzz-gir-devel
 BuildRequires:  sassc
 #gw needed for gtk-update-icon-cache in gtk+3.0 3.0.9
 BuildRequires:	gtk+2.0
