@@ -40,14 +40,14 @@
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
 Version:	3.24.38
-Release:	4
+Release:	100
 License:	LGPLv2+
 Group:		System/Libraries
 Url:		http://www.gtk.org
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/gtk+/%{url_ver}/%{pkgname}-%{version}.tar.xz
-Patch0:		gtk+-defaulttheme.patch
+#Patch0:		gtk+-defaulttheme.patch
 # Default to using KDE file dialogs etc.
-Patch1:		gtk-use-kde-file-dialogs-by-default.patch
+#Patch1:		gtk-use-kde-file-dialogs-by-default.patch
 Patch2:		gtk-3.24.34-default-to-sane-font-rendering.patch
 #(tpg) ClearLinux patch
 Patch3:		madvise.patch
