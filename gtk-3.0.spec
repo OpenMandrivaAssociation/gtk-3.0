@@ -40,7 +40,7 @@
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
 Version:	3.24.41
-Release:	1
+Release:	2
 License:	LGPLv2+
 Group:		System/Libraries
 Url:		http://www.gtk.org
@@ -125,6 +125,10 @@ Requires:	pango-modules
 Obsoletes:	gtk-engines3 < 3.0.0
 Provides:	%{pkgname}%{api} = %{version}-%{release}
 Recommends:	(breeze-gtk or plasma6-breeze-gtk)
+# Both gstreamer plugins needed for many GTK apps like totem to works/launch. Due gst package splitting (I HATE SPLITTING) no longer pulled by default from gst package.
+# Make it recommends to avoild dependencies problem at bootsreap builds.
+Recommends:	gstreamer1.0-gtk
+Recommends:	gstreamer1.0-gtk-wayland
 
 %if %{with compat32}
 BuildRequires:	gio2.0-32
