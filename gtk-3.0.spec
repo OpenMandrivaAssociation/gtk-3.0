@@ -45,6 +45,7 @@ License:	LGPLv2+
 Group:		System/Libraries
 Url:		https://www.gtk.org
 Source0:	https://ftp.gnome.org/pub/GNOME/sources/gtk+/%{url_ver}/%{pkgname}-%{version}.tar.xz
+# Dropped because causing problems on COSMIC, Wayfire, Sway, Hyprland etc.
 #Patch0:		gtk+-defaulttheme.patch
 # Default to using KDE file dialogs etc.
 #Patch1:		gtk-use-kde-file-dialogs-by-default.patch
