@@ -40,7 +40,7 @@
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
 Version:	3.24.43
-Release:	2
+Release:	3
 License:	LGPLv2+
 Group:		System/Libraries
 Url:		https://www.gtk.org
@@ -68,7 +68,7 @@ BuildRequires:	pkgconfig(gobject-introspection-1.0) >= 0.9.5
 BuildRequires:	pkgconfig(pango) >= 1.30
 BuildRequires:	pkgconfig(pangocairo) >= 1.30
 BuildRequires:	pkgconfig(atk-bridge-2.0) >= 2.6.0
-BuildRequires:	pkgconfig(tracker-sparql-3.0)
+BuildRequires:	pkgconfig(tinysparql-3.0)
 BuildRequires:	pkgconfig(iso-codes)
 BuildRequires:	pkgconfig(x11)
 BuildRequires:	pkgconfig(xcomposite)
