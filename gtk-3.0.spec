@@ -39,12 +39,14 @@
 
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
-Version:	3.24.43
-Release:	3
+Version:	3.24.48
+Release:	1
 License:	LGPLv2+
 Group:		System/Libraries
 Url:		https://www.gtk.org
-Source0:	https://ftp.gnome.org/pub/GNOME/sources/gtk+/%{url_ver}/%{pkgname}-%{version}.tar.xz
+# Upstream change source name, it is not longer in "gtk+" but with "gtk", also in same dir as gtk4.
+Source0:	https://download.gnome.org/sources/gtk/%{url_ver}/gtk-%{version}.tar.xz
+#Source0:	https://ftp.gnome.org/pub/GNOME/sources/gtk+/%{url_ver}/%{pkgname}-%{version}.tar.xz
 # Dropped because causing problems on COSMIC, Wayfire, Sway, Hyprland etc.
 #Patch0:		gtk+-defaulttheme.patch
 # Default to using KDE file dialogs etc.
@@ -375,7 +377,7 @@ Gail is the GNOME Accessibility Implementation Library
 %endif
 
 %prep
-%autosetup -n %{pkgname}-%{version} -p1
+%autosetup -n gtk-%{version} -p1
 # fix crash in nautilus (GNOME bug #596977)
 export CFLAGS=$(echo %{optflags} | sed -e 's/-fomit-frame-pointer//g')
 
