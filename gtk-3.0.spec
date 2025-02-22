@@ -40,7 +40,7 @@
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
 Version:	3.24.48
-Release:	1
+Release:	2
 License:	LGPLv2+
 Group:		System/Libraries
 Url:		https://www.gtk.org
@@ -118,7 +118,6 @@ Requires:	gtk-update-icon-cache
 %if !%{enable_bootstrap}
 Suggests:	xdg-user-dirs-gtk
 %endif
-Requires:	%{name}-common = %{version}-%{release}
 # MD to pull in all the orphaned module loaders
 Requires:	fontconfig
 Requires:	gdk-pixbuf2.0
@@ -248,6 +247,7 @@ This package contains a shared library for %{name}.
 Summary:	Shared libraries of The GIMP ToolKit (GTK+)
 Group:		System/Libraries
 Obsoletes:	%{_lib}gtk+3_0 < 3.8.1-6
+Requires:	%{name}-common = %{version}-%{release}
 # For native file dialogs
 %ifnarch %{riscv}
 Requires:	xdg-desktop-portal-implementation
