@@ -40,7 +40,7 @@
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
 Version:	3.24.51
-Release:	1
+Release:	2
 License:	LGPLv2+
 Group:		System/Libraries
 Url:		https://www.gtk.org
@@ -124,6 +124,9 @@ Requires:	gdk-pixbuf2.0
 Requires:	gio2.0
 Requires:	glib2.0-common
 Requires:	pango-modules
+
+# needed for printing from gtk3 apps. https://forum.openmandriva.org/t/support-with-printers/8360
+Requires:	%{modules} = %{version}-%{release}
 
 Obsoletes:	gtk-engines3 < 3.0.0
 Provides:	%{pkgname}%{api} = %{version}-%{release}
