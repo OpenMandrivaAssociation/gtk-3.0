@@ -40,7 +40,7 @@
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
 Version:	3.24.51
-Release:	3
+Release:	4
 License:	LGPLv2+
 Group:		System/Libraries
 Url:		https://www.gtk.org
@@ -56,7 +56,7 @@ Patch2:		gtk-3.24.34-default-to-sane-font-rendering.patch
 Patch3:		madvise.patch
 #Patch4:		grap-fix-build-without-introspection.patch
 BuildRequires:	cups-devel
-BuildRequires:	libxml2-utils
+BuildRequires:	libxml2-utils >= 2.15.2
 BuildRequires:	gettext-devel
 BuildRequires:	pkgconfig(atk) >= 1.29.2
 BuildRequires:	pkgconfig(cairo) >= 1.6.0
