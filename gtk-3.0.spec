@@ -40,7 +40,7 @@
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs
 Name:		%{pkgname}%{api_version}
 Version:	3.24.52
-Release:	1
+Release:	2
 License:	LGPLv2+
 Group:		System/Libraries
 Url:		https://www.gtk.org
@@ -466,6 +466,32 @@ fi
 %else
  %{_bindir}/gtk-query-immodules-%{api_version}-32 --update-cache
 %endif
+
+# Rebuild icon-theme.cache for any theme that gained or lost files under %{_iconsdir}
+%transfiletriggerin -n gtk-update-icon-cache -- %{_iconsdir}/
+if [ -x %{_bindir}/gtk-update-icon-cache ]; then
+	sed -n 's|^%{_iconsdir}/\([^/]*\)/.*|\1|p' | sort -u | while read theme; do
+		if [ -f %{_iconsdir}/"$theme"/index.theme ]; then
+			%{_bindir}/gtk-update-icon-cache --force --quiet %{_iconsdir}/"$theme" || :
+		fi
+	done
+fi
+
+%transfiletriggerpostun -n gtk-update-icon-cache -- %{_iconsdir}/
+# No file list on stdin here; refresh every remaining theme from the filesystem.
+if [ -x %{_bindir}/gtk-update-icon-cache ]; then
+	for dir in %{_iconsdir}/*; do
+		if [ -f "$dir"/index.theme ]; then
+			%{_bindir}/gtk-update-icon-cache --force --quiet "$dir" || :
+		fi
+	done
+fi
+
+# GTK-only caches; drop them when this helper is removed, but not on upgrade
+%preun -n gtk-update-icon-cache
+if [ "$1" = "0" ]; then
+	rm -f %{_iconsdir}/*/icon-theme.cache
+fi
 
 %files
 %dir %{_libdir}/gtk-%{api_version}
