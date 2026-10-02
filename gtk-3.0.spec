@@ -202,6 +202,11 @@ BuildRequires:	devel(libpangoft2-1.0)
 BuildRequires:	devel(libdbus-1)
 BuildRequires:	devel(libatspi)
 BuildRequires:	devel(libcups)
+BuildRequires:	cross-i686-openmandriva-linux-gnu-binutils
+BuildRequires:	cross-i686-openmandriva-linux-gnu-libc
+BuildRequires:	cross-i686-openmandriva-linux-gnu-gcc
+BuildRequires:	cross-i686-openmandriva-linux-gnu-kernel-headers
+BuildRequires:	cross-i686-openmandriva-linux-gnu-clang
 %endif
 
 %description
